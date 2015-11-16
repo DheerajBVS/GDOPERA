@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Shaji Sethu (Fidelio Cruise Software Gmbh) -->
+<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by Micros Systems (Micros Systems Inc) -->
+<xs:schema targetNamespace="http://webservices.micros.com/og/4.3/Common/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://webservices.micros.com/og/4.3/Common/" elementFormDefault="qualified" attributeFormDefault="unqualified" version="4.3">
+	<xs:complexType name="Address">
+		<xs:sequence>
+			<xs:element name="AddressLine" type="xs:string" minOccurs="0" maxOccurs="5"/>
+			<xs:element name="cityName" type="xs:string" minOccurs="0"/>
+			<xs:element name="stateProv" type="xs:string" minOccurs="0"/>
+			<xs:element name="countryCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="postalCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="barCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="cityExtension" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="addressType" type="xs:string" use="optional"/>
+		<xs:attribute name="otherAddressType" type="xs:string"/>
+		<xs:attribute name="languageCode" type="xs:string" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="Amount">
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="currencyCode" type="xs:string"/>
+				<xs:attribute name="decimals" type="xs:short" use="optional"/>
+				<xs:attribute name="currencyText" type="xs:string" use="optional"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="CreditCard">
+		<xs:sequence>
+			<xs:element name="cardCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="cardHolderName" type="xs:string" minOccurs="0"/>
+			<xs:choice>
+				<xs:element name="cardNumber" type="xs:string" minOccurs="0"/>
+				<xs:element name="VaultedCardData" type="tns:VaultedCardType" minOccurs="0"/> 
+			</xs:choice>
+			<xs:element name="seriesCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="Track2" type="xs:string" minOccurs="0"/>
+			<xs:element name="effectiveDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="expirationDate" type="xs:date"/>
+			<xs:element name="EncryptedSwipe" type="tns:EncryptedSwipe" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="cardType" type="xs:string"/>
+		<xs:attribute name="otherCardType" type="xs:string"/>
+		<xs:attribute name="chipAndPin" type="xs:boolean" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="DescriptiveText">
+		<xs:choice>
+			<xs:element name="Text" type="tns:TextList"/>
+			<xs:element name="Image" type="xs:string"/>
+			<xs:element name="Url" type="xs:anyURI"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="IDPair">
+		<xs:attribute name="idType" type="xs:string"/>
+		<xs:attribute name="operaId" type="xs:long"/>
+		<xs:attribute name="externalId" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="IDPairList">
+		<xs:sequence>
+			<xs:element name="IDPair" type="tns:IDPair" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Membership">
+		<xs:sequence>
+			<xs:element name="membershipType" type="xs:string" minOccurs="0"/>
+			<xs:element name="membershipNumber" type="xs:string"/>
+			<xs:element name="membershipLevel" type="xs:string" minOccurs="0"/>
+			<xs:element name="membershipNextLevel" type="xs:string" minOccurs="0"/>
+			<xs:element name="memberName" type="xs:string" minOccurs="0"/>
+			<xs:element name="effectiveDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="expirationDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="currentPoints" type="xs:double" minOccurs="0"/>
+			<xs:element name="enrollmentCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="ResvNameId" type="tns:UniqueIDList" minOccurs="0"/>
+			<xs:element name="membershipid" type="tns:UniqueID" minOccurs="0"/>
+			<xs:element name="transferPoints" type="xs:long" minOccurs="0"/>
+			<xs:element name="enrollmentSource" type="xs:string" minOccurs="0"/>
+			<xs:element name="enrolledAt" type="xs:string" minOccurs="0"/>
+			<xs:element name="awardPointsToExpires" type="tns:AwardPointsToExpireList" minOccurs="0"/>
+			<xs:element name="inactive"     type="xs:boolean" minOccurs="0"/>
+			<xs:element name="excludeBatchIndicator" type="xs:boolean" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GovernmentID">
+		<xs:attribute name="documentType" type="xs:string"/>
+		<xs:attribute name="documentNumber" type="xs:string"/>
+		<xs:attribute name="effectiveDate" type="xs:date"/>
+		<xs:attribute name="expirationDate" type="xs:date"/>
+		<xs:attribute name="placeOfIssue" type="xs:string"/>
+		<xs:attribute name="countryOfIssue" type="xs:string"/>
+		<xs:attribute name="documentID" type="xs:int" use="optional"/>
+		<xs:attribute name="resort" type="xs:string" use="optional"/>
+		<xs:attribute name="primary" type="xs:boolean" use="optional"/>
+		<xs:attribute name="displaySequence" type="xs:int" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="GovernmentIDList">
+		<xs:sequence>
+			<xs:element name="GovernmentID" type="tns:GovernmentID" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PersonName">
+		<xs:sequence>
+			<xs:element name="nameTitle" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="firstName" type="xs:string" minOccurs="0"/>
+			<xs:element name="middleName" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="lastName" type="xs:string"/>
+			<xs:element name="nameSuffix" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="accountName2" type="xs:string" minOccurs="0"/>
+			<xs:element name="accountName3" type="xs:string" minOccurs="0"/>
+			<xs:element name="profession" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="nameOrdered" type="xs:string"/>
+		<xs:attribute name="familiarName" type="xs:string"/>
+		<xs:attribute name="active" type="xs:boolean"/>
+	</xs:complexType>
+	<xs:complexType name="Phone">
+		<xs:choice>
+			<xs:element name="PhoneNumber" type="xs:string"/>
+			<xs:element name="PhoneData" minOccurs="0">
+				<xs:complexType>
+					<xs:attribute name="countryAccessCode" type="xs:string"/>
+					<xs:attribute name="areaCode" type="xs:string"/>
+					<xs:attribute name="phoneNumber" type="xs:string"/>
+					<xs:attribute name="extension" type="xs:string"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+		<xs:attribute name="phoneType" type="xs:string"/>
+		<xs:attribute name="phoneRole" type="xs:string"/>
+		<xs:attribute name="primaryPhone" type="xs:boolean" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="ResultStatus">
+		<xs:sequence>
+			<xs:element name="Text" type="tns:TextList" minOccurs="0"/>
+			<xs:element name="IDs" type="tns:IDPairList" minOccurs="0"/>
+			<xs:element name="OperaErrorCode" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="resultStatusFlag" type="tns:ResultStatusFlag"/>
+	</xs:complexType>
+	<xs:complexType name="Text">
+		<xs:simpleContent>
+			<xs:extension base="xs:normalizedString">
+				<xs:attribute name="formatted" type="xs:boolean" use="optional"/>
+				<xs:attribute name="language" type="xs:language" use="optional"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="TextList">
+		<xs:sequence>
+			<xs:element name="TextElement" type="tns:Text" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UniqueID">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="type" type="tns:UniqueIDType" use="required"/>
+				<xs:attribute name="source" type="xs:string"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="UniqueIDList">
+		<xs:sequence>
+			<xs:element name="UniqueID" type="tns:UniqueID" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UserDefinedValue">
+		<xs:choice>
+			<xs:element name="CharacterValue" type="xs:string"/>
+			<xs:element name="DateValue" type="xs:dateTime"/>
+			<xs:element name="NumericValue" type="xs:decimal"/>
+		</xs:choice>
+		<xs:attribute name="valueName" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="UserDefinedValueList">
+		<xs:sequence>
+			<xs:element name="UserDefinedValue" type="tns:UserDefinedValue" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!--Attribute Groups-->
+	<xs:attributeGroup name="RecordAdministratorAttributes">
+		<xs:attribute name="insertUser" type="xs:string"/>
+		<xs:attribute name="insertDate" type="xs:dateTime"/>
+		<xs:attribute name="updateUser" type="xs:string"/>
+		<xs:attribute name="updateDate" type="xs:dateTime"/>
+		<xs:attribute name="inactiveDate" type="xs:date"/>
+	</xs:attributeGroup>
+	<!--Element place holders for complex types-->
+	<!--<xs:element name="ResultStatus" type="tns:ResultStatus"/>-->
+	<!--Enumerated Data Types-->
+	<xs:simpleType name="BlackListFlag">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="REMOVE"/>
+			<xs:enumeration value="SET"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Gender">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="UNKNOWN"/>
+		    <xs:enumeration value="FEMALE"/>
+			<xs:enumeration value="MALE"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ResultStatusFlag">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="FAIL"/>
+			<xs:enumeration value="SUCCESS"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SubscriptionAction">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="OTHER"/>
+			<xs:enumeration value="SUBSCRIBE"/>
+			<xs:enumeration value="UNSUBSCRIBE"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="UniqueIDType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="EXTERNAL"/>
+			<xs:enumeration value="INTERNAL"/>
+			<xs:enumeration value="CANCELLATIONEXTERNAL"/>
+			<xs:enumeration value="CANCELLATIONINTERNAL"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="History">
+		<xs:attributeGroup ref="tns:RecordAdministratorAttributes"/>
+		<xs:attribute name="transactions" type="xs:int" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="KeyTrack">
+		<xs:attribute name="Key1Track" type="xs:string" use="optional"/>
+		<xs:attribute name="Key2Track" type="xs:string" use="optional"/>
+		<xs:attribute name="Key3Track" type="xs:string" use="optional"/>
+		<xs:attribute name="Key4Track" type="xs:string" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="GuestProfile">
+		<xs:annotation>
+			<xs:documentation>represents the information regarding the profile</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="NameID" type="tns:UniqueID" minOccurs="0"/>
+			<xs:element name="PersonName" type="tns:PersonName"/>
+			<xs:element name="BirthDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="Gender" type="tns:Gender" minOccurs="0"/>
+			<xs:element name="Address" type="tns:Address" minOccurs="0"/>
+			<xs:element name="Phone" type="tns:Phone" minOccurs="0"/>
+			<xs:element name="EmailAddress" type="xs:string" minOccurs="0"/>
+			<xs:element name="MembershipID" type="tns:UniqueID" minOccurs="0"/>
+			<xs:element name="MembershipNumber" type="xs:string" minOccurs="0"/>
+			<xs:element name="MembershipType" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ClaimComment">
+		<xs:annotation>
+			<xs:documentation>represents the comments regarding the claim</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Sequence" type="xs:int" minOccurs="0"/>
+			<xs:element name="ClaimDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="ClaimActivity" type="xs:string" minOccurs="0"/>
+			<xs:element name="Comments" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ClaimCommentsList">
+		<xs:sequence>
+			<xs:element name="ClaimCommentsInfo" type="tns:ClaimComment" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Claim">
+		<xs:annotation>
+			<xs:documentation>represents the information regarding the claims submitted</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ClaimId" type="xs:double" minOccurs="0"/>
+			<xs:element name="ClaimDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="ClaimType" type="xs:string" minOccurs="0"/>
+			<xs:element name="RecordType" type="xs:string" minOccurs="0"/>
+			<xs:element name="Resort" type="xs:string" minOccurs="0"/>
+			<xs:element name="ClaimStatus" type="xs:string" minOccurs="0"/>
+			<xs:element name="FinalStatus" type="xs:string" minOccurs="0"/>
+			<xs:element name="ClaimInformation" type="xs:string"/>
+			<xs:element name="CloseDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="ClaimSource" type="xs:string" minOccurs="0"/>
+			<xs:element name="CallerName" type="xs:string" minOccurs="0"/>
+			<xs:element name="Owner" type="xs:string" minOccurs="0"/>
+			<xs:element name="NameID" type="tns:UniqueID" minOccurs="0"/>
+			<xs:element name="MembershipID" type="tns:UniqueID" minOccurs="0"/>
+			<xs:element name="MembershipType" type="xs:string" minOccurs="0"/>
+			<xs:element name="MembershipCardNumber" type="xs:string" minOccurs="0"/>
+			<xs:element name="PmsReferenceNumber" type="xs:string" minOccurs="0"/>
+			<xs:element name="OrsReferenceNumber" type="xs:string" minOccurs="0"/>
+			<xs:element name="ClaimComments" type="tns:ClaimCommentsList" minOccurs="0"/>
+			<xs:element name="StartDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="EndDate" type="xs:date" minOccurs="0"/>
+			<!--			<xs:element name="StayDate" type="hc:TimeSpan" minOccurs="0"/>-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ClaimsList">
+		<xs:sequence>
+			<xs:element name="ClaimsInfo" type="tns:Claim" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AwardPointsToExpire">
+		<xs:attribute name="expirationDate" type="xs:date" use="required"/>
+		<xs:attribute name="totalToExpire" type="xs:double" use="required"/>
+		<xs:attribute name="expireByDate" type="xs:double" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="AwardPointsToExpireList">
+		<xs:sequence>
+			<xs:element name="AwardPointsToExpire" type="tns:AwardPointsToExpire" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EncryptedSwipe">
+		<xs:sequence>
+			<xs:element name="TrackIndicator" type="xs:string"/>
+			<xs:element name="SwiperType" type="xs:string"/>
+			<xs:element name="SwiperID" type="xs:string" minOccurs="0"/>
+			<xs:element name="MaskedPAN" type="xs:string"/>
+			<xs:element name="Track1" type="xs:string" minOccurs="0"/>
+			<xs:element name="Track2" type="xs:string" minOccurs="0"/>
+			<xs:element name="KeySerialNumber" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="RequestActionType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ADD"/>
+			<xs:enumeration value="DELETE"/>
+			<xs:enumeration value="UPDATE"/>
+			<xs:enumeration value="FETCH"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ProfileType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="INDIVIDUAL"/>
+			<xs:enumeration value="TRAVEL_AGENT"/>
+			<xs:enumeration value="COMPANY"/>
+			<xs:enumeration value="SOURCE"/>
+			<xs:enumeration value="GROUP"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Frequency">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ONCE"/>
+			<xs:enumeration value="DAILY"/>
+			<xs:enumeration value="WEEKLY"/>
+			<xs:enumeration value="MONTHLY"/>
+			<xs:enumeration value="QUARTERLY"/>
+			<xs:enumeration value="YEARLY"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="InternalID">
+		<xs:simpleContent>
+			<xs:extension base="tns:UniqueID">
+				<xs:attribute name="actionType" type="tns:RequestActionType" use="optional"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="VaultedCardType">
+		<xs:attribute name="vaultedCardID" type="xs:string" use="required"/>
+		<xs:attribute name="lastFourDigits" type="xs:string" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="FileData">
+		<xs:sequence>
+			<xs:element name="FileContents" type="xs:base64Binary"/>
+		</xs:sequence>
+		<xs:attribute name="fileType" type="tns:FileType" use="required"/>
+		<xs:attribute name="folioView" type="xs:integer" use="optional"/>
+		<xs:attribute name="fileName" type="xs:string" use="optional"/>
+	</xs:complexType>
+	<xs:simpleType name="FileType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PDF"/>
+			<xs:enumeration value="TXT"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

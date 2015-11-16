@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by Micros Systems Inc (Micros Systems Inc) -->
+<xs:schema targetNamespace="http://webservices.micros.com/og/4.3/HouseKeeping/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://webservices.micros.com/og/4.3/HouseKeeping/" xmlns:c="http://webservices.micros.com/og/4.3/Common/" xmlns:hc="http://webservices.micros.com/og/4.3/HotelCommon/" xmlns:n="http://webservices.micros.com/og/4.3/Name/" xmlns:r="http://webservices.micros.com/og/4.3/Reservation/" elementFormDefault="qualified" attributeFormDefault="unqualified" version="4.3">
+	<xs:import namespace="http://webservices.micros.com/og/4.3/Common/" schemaLocation="Common.xsd"/>
+	<xs:import namespace="http://webservices.micros.com/og/4.3/HotelCommon/" schemaLocation="HotelCommon.xsd"/>
+	<xs:import namespace="http://webservices.micros.com/og/4.3/Name/" schemaLocation="Name.xsd"/>
+	<xs:import namespace="http://webservices.micros.com/og/4.3/Reservation/" schemaLocation="Reservation.xsd"/>
+	<xs:simpleType name="HouseKeepingSection">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="AM"/>
+			<xs:enumeration value="PM"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="HouseKeepingStatus">
+		<xs:sequence>
+			<xs:element name="RoomNo" type="xs:string" minOccurs="0"/>
+			<xs:element name="RoomType" type="xs:string" minOccurs="0"/>
+			<xs:element name="RoomStatus" type="HouseKeepingRoomStatus" minOccurs="0"/>
+			<xs:element name="FOStatus" type="HouseKeepingFOStatus" minOccurs="0"/>
+			<xs:element name="ReservationStatus" type="HouseKeepingReservationStatus" minOccurs="0"/>
+			<xs:element name="RoomClass" type="xs:string" minOccurs="0"/>
+			<xs:element name="Floor" type="xs:string" minOccurs="0"/>
+			<xs:element name="Section" type="HouseKeepingSection" minOccurs="0"/>
+			<xs:element name="Features" type="hc:RoomFeatureList" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="HouseKeepingRoomStatus">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="CLEAN"/>
+			<xs:enumeration value="DIRTY"/>
+			<xs:enumeration value="OUTOFORDER"/>
+			<xs:enumeration value="PICKUP"/>
+			<xs:enumeration value="INSPECTED"/>
+			<xs:enumeration value="OUTOFSERVICE"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="HouseKeepingFOStatus">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="VACANT"/>
+			<xs:enumeration value="OCCUPIED"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="HouseKeepingReservationStatus">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="STAYOVER"/>
+			<xs:enumeration value="ARRIVED"/>
+            <xs:enumeration value="DUEOUT"/>
+			<xs:enumeration value="DEPARTURES"/>
+			<xs:enumeration value="DEPARTED"/>
+            <xs:enumeration value="ARRIVAL"/>
+			<xs:enumeration value="EXPECTED"/>
+			<xs:enumeration value="RESERVED"/>
+			<xs:enumeration value="DAYUSE"/>
+			<xs:enumeration value="ARRIVEDANDSTAYOVER"/>
+			<xs:enumeration value="VACANT"/>
+			<xs:enumeration value="NOTRESERVED"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="HouseKeepingTurnDownStatus">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="REQUIRED"/>
+			<xs:enumeration value="NOTREQUIRED"/>
+			<xs:enumeration value="COMPLETED"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="HouseKeepingStatusList">
+		<xs:sequence>
+			<xs:element name="HouseKeepingStatus" type="HouseKeepingStatus" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HouseKeepingStatistics">
+		<xs:simpleContent>
+			<xs:extension base="xs:int">
+				<xs:attribute name="description" type="xs:string"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="HouseKeepingStatisticsList">
+		<xs:sequence>
+			<xs:element name="HouseKeepingStatistics" type="HouseKeepingStatistics" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RoomSummaryStatus">
+		<xs:sequence>
+			<xs:element name="TotalPhysicalRooms" type="xs:int" minOccurs="0"/>
+			<xs:element name="OutofOrder" type="xs:int" minOccurs="0"/>
+			<xs:element name="TotalRoomstoSell" type="xs:int" minOccurs="0"/>
+			<xs:element name="OutofService" type="xs:int" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ActivityStatus">
+		<xs:sequence>
+			<xs:element name="StayoversRoom" type="xs:int" minOccurs="0"/>
+			<xs:element name="StayoversPersons" type="xs:int" minOccurs="0"/>
+			<xs:element name="StayoversVIP" type="xs:int" minOccurs="0"/>
+			<xs:element name="DeparturesExpectedRoom" type="xs:int" minOccurs="0"/>
+			<xs:element name="DeparturesExpectedPersons" type="xs:int" minOccurs="0"/>
+			<xs:element name="DeparturesExpectedVIP" type="xs:int" minOccurs="0"/>
+			<xs:element name="DeparturesActualRoom" type="xs:int" minOccurs="0"/>
+			<xs:element name="DeparturesActualPersons" type="xs:int" minOccurs="0"/>
+			<xs:element name="DeparturesActualVIP" type="xs:int" minOccurs="0"/>
+			<xs:element name="ArrivalsExpectedRoom" type="xs:int" minOccurs="0"/>
+			<xs:element name="ArrivalsExpectedPersons" type="xs:int" minOccurs="0"/>
+			<xs:element name="ArrivalsExpectedVIP" type="xs:int" minOccurs="0"/>
+			<xs:element name="ArrivalsActualRoom" type="xs:int" minOccurs="0"/>
+			<xs:element name="ArrivalsActualPersons" type="xs:int" minOccurs="0"/>
+			<xs:element name="ArrivalsActualVIP" type="xs:int" minOccurs="0"/>
+			<xs:element name="ExtendedStaysRoom" type="xs:int" minOccurs="0"/>
+			<xs:element name="ExtendedStaysPersons" type="xs:int" minOccurs="0"/>
+			<xs:element name="ExtendedStaysVIP" type="xs:int" minOccurs="0"/>
+			<xs:element name="EarlyDeparturesRoom" type="xs:int" minOccurs="0"/>
+			<xs:element name="EarlyDeparturesPersons" type="xs:int" minOccurs="0"/>
+			<xs:element name="EarlyDeparturesVIP" type="xs:int" minOccurs="0"/>
+			<xs:element name="DayUseRoomsRoom" type="xs:int" minOccurs="0"/>
+			<xs:element name="DayUseRoomsPersons" type="xs:int" minOccurs="0"/>
+			<xs:element name="DayUseRoomsVIP" type="xs:int" minOccurs="0"/>
+			<xs:element name="WalkInsRoom" type="xs:int" minOccurs="0"/>
+			<xs:element name="WalkInsPersons" type="xs:int" minOccurs="0"/>
+			<xs:element name="WalkInsVIP" type="xs:int" minOccurs="0"/>
+			<xs:element name="DayofArrivalCancelsRoom" type="xs:int" minOccurs="0"/>
+			<xs:element name="DayofArrivalCancelsPersons" type="xs:int" minOccurs="0"/>
+			<xs:element name="DayofArrivalCancelsVIP" type="xs:int" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ComplimentaryStatus">
+		<xs:sequence>
+			<xs:element name="ComplimentaryArrivalsRoom" type="xs:int" minOccurs="0"/>
+			<xs:element name="ComplimentaryArrivalsPersons" type="xs:int" minOccurs="0"/>
+			<xs:element name="ComplimentaryArrivalsVIP" type="xs:int" minOccurs="0"/>
+			<xs:element name="ComplimentaryStayOversRoom" type="xs:int" minOccurs="0"/>
+			<xs:element name="ComplimentaryStayOversPersons" type="xs:int" minOccurs="0"/>
+			<xs:element name="ComplimentaryStayOversVIP" type="xs:int" minOccurs="0"/>
+			<xs:element name="ComplimentaryDeparturesRoom" type="xs:int" minOccurs="0"/>
+			<xs:element name="ComplimentaryDeparturesPersons" type="xs:int" minOccurs="0"/>
+			<xs:element name="ComplimentaryDeparturesVIP" type="xs:int" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HouseUseStatus">
+		<xs:sequence>
+			<xs:element name="HouseUseArrivalsRoom" type="xs:int" minOccurs="0"/>
+			<xs:element name="HouseUseArrivalsPersons" type="xs:int" minOccurs="0"/>
+			<xs:element name="HouseUseArrivalsVIP" type="xs:int" minOccurs="0"/>
+			<xs:element name="HouseUseStayoversRoom" type="xs:int" minOccurs="0"/>
+			<xs:element name="HouseUseStayoversPersons" type="xs:int" minOccurs="0"/>
+			<xs:element name="HouseUseStayoversVIP" type="xs:int" minOccurs="0"/>
+			<xs:element name="HouseUseDeparturesRoom" type="xs:int" minOccurs="0"/>
+			<xs:element name="HouseUseDeparturesPersons" type="xs:int" minOccurs="0"/>
+			<xs:element name="HouseUseDeparturesVIP" type="xs:int" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EndOfDayProjectionStatus">
+		<xs:sequence>
+			<xs:element name="MinAvailableTonight" type="xs:int" minOccurs="0"/>
+			<xs:element name="MaxOccupiedTonightRoom" type="xs:int" minOccurs="0"/>
+			<xs:element name="MaxOccupiedTonightPersons" type="xs:int" minOccurs="0"/>
+			<xs:element name="MaxOccupiedTonightVIP" type="xs:int" minOccurs="0"/>
+			<xs:element name="MaxPertOccupiedTonight" type="xs:double" minOccurs="0"/>
+			<xs:element name="MaxPertOccupiedTonightDayUse" type="xs:double" minOccurs="0"/>
+			<xs:element name="BlocksnotPickedUp" type="xs:int" minOccurs="0"/>
+			<xs:element name="IndividualsRoom" type="xs:int" minOccurs="0"/>
+			<xs:element name="IndividualsPersons" type="xs:int" minOccurs="0"/>
+			<xs:element name="IndividualsVIP" type="xs:int" minOccurs="0"/>
+			<xs:element name="GroupsandBlocksRoom" type="xs:int" minOccurs="0"/>
+			<xs:element name="GroupsandBlocksPersons" type="xs:int" minOccurs="0"/>
+			<xs:element name="GroupsandBlocksVIP" type="xs:int" minOccurs="0"/>
+			<xs:element name="RoomRevenue" type="xs:double" minOccurs="0"/>
+			<xs:element name="RoomRevenueAvg" type="xs:double" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HouseRoomStatus">
+		<xs:sequence>
+			<xs:element name="InspectedRoomVacant" type="xs:int" minOccurs="0"/>
+			<xs:element name="InspectedRoomOccupied" type="xs:int" minOccurs="0"/>
+			<xs:element name="CleanRoomVacant" type="xs:int" minOccurs="0"/>
+			<xs:element name="CleanRoomOccupied" type="xs:int" minOccurs="0"/>
+			<xs:element name="DirtyRoomVacant" type="xs:int" minOccurs="0"/>
+			<xs:element name="DirtyRoomOccupied" type="xs:int" minOccurs="0"/>
+			<xs:element name="PickupRoomVacant" type="xs:int" minOccurs="0"/>
+			<xs:element name="PickupRoomOccupied" type="xs:int" minOccurs="0"/>
+			<xs:element name="OutofOrderRoomVacant" type="xs:int" minOccurs="0"/>
+			<xs:element name="OutofOrderRoomOccupied" type="xs:int" minOccurs="0"/>
+			<xs:element name="OutofServiceRoomVacant" type="xs:int" minOccurs="0"/>
+			<xs:element name="OutofServiceRoomOccupied" type="xs:int" minOccurs="0"/>
+			<xs:element name="QueueRoom" type="xs:int" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TurnDownStatus">
+		<xs:sequence>
+			<xs:element name="TurnDownRequired" type="xs:int" minOccurs="0"/>
+			<xs:element name="TurnDownNotRequired" type="xs:int" minOccurs="0"/>
+			<xs:element name="TurnDownCompleted" type="xs:int" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HouseStatus">
+		<xs:sequence>
+			<xs:element name="RoomSummaryStatus" type="RoomSummaryStatus" minOccurs="0"/>
+			<xs:element name="ActivityStatus" type="ActivityStatus" minOccurs="0"/>
+			<xs:element name="ComplimentaryStatus" type="ComplimentaryStatus" minOccurs="0"/>
+			<xs:element name="HouseUseStatus" type="HouseUseStatus" minOccurs="0"/>
+			<xs:element name="EndOfDayProjectionStatus" type="EndOfDayProjectionStatus" minOccurs="0"/>
+			<xs:element name="HouseRoomStatus" type="HouseRoomStatus" minOccurs="0"/>
+			<xs:element name="TurnDownStatus" type="TurnDownStatus" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HouseStatusList">
+		<xs:sequence>
+			<xs:element name="HouseStatus" type="HouseStatus" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HouseKeepingDiscrepancy">
+		<xs:sequence>
+			<xs:element name="RoomNumber" type="xs:string" minOccurs="0"/>
+			<xs:element name="RoomType" type="xs:string" minOccurs="0"/>
+			<xs:element name="RoomStatus" type="HouseKeepingRoomStatus" minOccurs="0"/>
+            <xs:element name="HKStatus" type="HouseKeepingFOStatus" minOccurs="0"/>
+			<xs:element name="FOStatus" type="HouseKeepingFOStatus" minOccurs="0"/>
+			<xs:element name="ReservationStatus" type="HouseKeepingReservationStatus" minOccurs="0"/>
+			<xs:element name="FOPersons" type="xs:string" minOccurs="0"/>
+			<xs:element name="HKPersons" type="xs:int" minOccurs="0"/>
+			<xs:element name="Discrepancy" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HouseKeepingDiscrepanciesList">
+		<xs:sequence>
+			<xs:element name="HouseKeepingDiscrepancies" type="HouseKeepingDiscrepancy" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	</xs:schema>

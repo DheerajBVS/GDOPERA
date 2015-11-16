@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by Micros Systems Inc (Micros Systems Inc) -->
+<xs:schema targetNamespace="http://webservices.micros.com/og/4.3/UnitOwners/" xmlns:nm="http://webservices.micros.com/og/4.3/Name/" xmlns:hc="http://webservices.micros.com/og/4.3/HotelCommon/" xmlns:c="http://webservices.micros.com/og/4.3/Common/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://webservices.micros.com/og/4.3/UnitOwners/" elementFormDefault="qualified" attributeFormDefault="unqualified" version="4.3">
+	<xs:import namespace="http://webservices.micros.com/og/4.3/Common/" schemaLocation="Common.xsd"/>
+	<xs:import namespace="http://webservices.micros.com/og/4.3/Name/" schemaLocation="Name.xsd"/>
+	<xs:import namespace="http://webservices.micros.com/og/4.3/HotelCommon/" schemaLocation="HotelCommon.xsd"/>
+	<xs:simpleType name="ContractProfileType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PRIMARYOWNER"/>
+			<xs:enumeration value="CO-OWNER"/>
+			<xs:enumeration value="FRIENDS_AND_FAMILY"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="RelatedProfile">
+		<xs:complexContent>
+			<xs:extension base="nm:Profile">
+				<xs:attribute name="ContractProfileType" type="ContractProfileType" use="optional"/>
+				<xs:attribute name="Relationship" type="xs:string" use="optional"/>
+				<xs:attribute name="taxId" type="xs:string" use="optional"/>
+				<xs:attribute name="primary" type="xs:boolean" use="optional"/>
+				<xs:attribute name="changeUnit" type="xs:boolean" use="optional"/>
+				<xs:attribute name="revenuePercentage" type="xs:double" use="optional"/>
+				<xs:attribute name="include1099" type="xs:boolean" use="optional"/>
+				<xs:attribute name="generalExciseTax" type="xs:boolean" use="optional"/>
+				<xs:attribute name="transientAccommodationTax" type="xs:boolean" use="optional"/>
+				<xs:attribute name="accountCode" type="xs:unsignedInt" use="optional"/>
+				<xs:attribute name="CommissionPercentage" type="xs:double" use="optional"/>
+				
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="RelatedProfileList">
+		<xs:sequence>
+			<xs:element name="RelatedProfiles" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="RelatedProfile">
+							<xs:attribute name="recordId" type="xs:long" use="optional"/>
+							<xs:attribute name="systemStatus" type="xs:string" use="optional"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UnitContract">
+		<xs:sequence>
+			<xs:element name="ContractId" type="c:UniqueID" minOccurs="0"/>
+			<xs:element name="HotelReference" type="hc:HotelReference"/>
+			<xs:element name="ContractNumber" type="xs:string" minOccurs="0"/>
+			<xs:element name="Unit" type="hc:Room" minOccurs="0"/>
+			<xs:element name="RatePlan" type="hc:RatePlan" minOccurs="0"/>
+			<xs:element name="ValidDates" type="hc:TimeSpan" minOccurs="0"/>
+			<xs:element name="PrimaryOwner" type="RelatedProfile" minOccurs="0"/>
+			<xs:element name="AuthorizedProfiles" type="RelatedProfileList" minOccurs="0"/>
+			<xs:element name="ContractType" type="xs:string" minOccurs="0"/>
+			<xs:element name="RequesterContractProfileType" type="ContractProfileType" minOccurs="0"/>
+			<xs:element name="RentalProgram" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="Status" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="Actual"/>
+						<xs:enumeration value="Negotiated"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="TemplateCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="IgnoreTemplateUpdate" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="FractionalOwners" type="xs:boolean" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UnitContractList">
+		<xs:sequence>
+			<xs:element name="Contracts" type="UnitContract" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ContractRestriction">
+		<xs:sequence>
+			<xs:element name="RecordId" type="xs:long" minOccurs="0"/>
+			<xs:element name="RestrictionType" type="xs:string" minOccurs="0"/>
+			<xs:element name="Dates" type="hc:TimeSpan" minOccurs="0"/>
+			<xs:element name="MaximumNights" type="xs:integer" minOccurs="0"/>
+			<xs:element name="MinimumRate" type="c:Amount" minOccurs="0"/>
+			<xs:element name="UsedNights" type="xs:integer" minOccurs="0"/>
+			<xs:element name="ParentId" type="xs:long" minOccurs="0"/>
+			<xs:element name="Day1" type="xs:string" minOccurs="0"/>
+			<xs:element name="Day2" type="xs:string" minOccurs="0"/>
+			<xs:element name="Day3" type="xs:string" minOccurs="0"/>
+			<xs:element name="Day4" type="xs:string" minOccurs="0"/>
+			<xs:element name="Day5" type="xs:string" minOccurs="0"/>
+			<xs:element name="Day6" type="xs:string" minOccurs="0"/>
+			<xs:element name="Day7" type="xs:string" minOccurs="0"/>
+			<xs:element name="SystemStatus" type="xs:string" minOccurs="0"/>
+			<xs:element name="AdjustmentReason" type="xs:string" minOccurs="0"/>
+			<xs:element name="CompNights" type="xs:integer" minOccurs="0"/>
+			<xs:element name="OwnerMaximum" type="xs:double" minOccurs="0"/>
+			<xs:element name="AuthMaximum" type="xs:double" minOccurs="0"/>
+			<xs:element name="AdjustmentValue" type="xs:double" minOccurs="0"/>
+			<xs:element name="Rate" type="xs:double" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="type" use="optional">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="Owner"/>
+					<xs:enumeration value="AuthorizedUser"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="restriction" use="optional">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="BlackOut"/>
+					<xs:enumeration value="AdvanceBooking"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="InsurancePolicy">
+		<xs:sequence>
+			<xs:element name="RecordId" type="xs:long" minOccurs="0"/>
+			<xs:element name="PolicyNumber" type="xs:string"/>
+			<xs:element name="InsuranceType" type="xs:string" minOccurs="0"/>
+			<xs:element name="EffectiveDates" type="hc:TimeSpan"/>
+			<xs:element name="Company" type="nm:Profile" minOccurs="0"/>
+			<xs:element name="Required_For_Rental" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="SystemStatus" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ContractDocument">
+		<xs:sequence>
+			<xs:element name="RecordId" type="xs:long" minOccurs="0"/>
+			<xs:element name="DocumentType" type="xs:string" minOccurs="0"/>
+			<xs:element name="Description" type="c:DescriptiveText" minOccurs="0"/>
+			<xs:element name="DateReceived" type="xs:date" minOccurs="0"/>
+			<xs:element name="SystemStatus" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ContractPoints">
+		<xs:sequence>
+			<xs:element name="RecordId" type="xs:long" minOccurs="0"/>
+			<xs:element name="PointType" type="xs:string" minOccurs="0"/>
+			<xs:element name="Dates" type="hc:TimeSpan"/>
+			<xs:element name="RateCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="Points" type="xs:double" minOccurs="0"/>
+			<xs:element name="SystemStatus" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ContractTask">
+		<xs:sequence>
+			<xs:element name="RecordId" type="xs:long" minOccurs="0"/>
+			<xs:element name="TaskCode" type="xs:string"/>
+			<xs:element name="Amount" type="c:Amount" minOccurs="0"/>
+			<xs:element name="TaskRhythm" type="xs:string" minOccurs="0"/>
+			<xs:element name="TransactionCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="PostTo" type="xs:string" minOccurs="0"/>
+			<xs:element name="OccupiedBy" type="xs:string" minOccurs="0"/>
+			<xs:element name="PostingRule" type="xs:string" minOccurs="0"/>
+			<xs:element name="SystemStatus" type="xs:string" minOccurs="0"/>
+			<xs:element name="Sequence" type="xs:integer" minOccurs="0"/>
+			<xs:element name="Nights" type="xs:integer" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ContractFees">
+		<xs:sequence>
+			<xs:element name="RecordId" type="xs:long" minOccurs="0"/>
+			<xs:element name="FeeCode" type="xs:string"/>
+			<xs:element name="Frequency" type="xs:string" minOccurs="0"/>
+			<xs:element name="Formula" type="xs:string" minOccurs="0"/>
+			<xs:element name="Amount" type="c:Amount" minOccurs="0"/>
+			<xs:element name="TransactionCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="AutoPost" type="xs:string" minOccurs="0"/>
+			<xs:element name="PostTo" type="xs:string" minOccurs="0"/>
+			<xs:element name="OccupiedBy" type="xs:string" minOccurs="0"/>
+			<xs:element name="SystemStatus" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ContractDeduction">
+		<xs:sequence>
+			<xs:element name="RecordId" type="xs:long" minOccurs="0"/>
+			<xs:element name="DeductionCode" type="xs:string"/>
+			<xs:element name="Rule" type="xs:string" minOccurs="0"/>
+			<xs:element name="Amount" type="c:Amount" minOccurs="0"/>
+			<xs:element name="Formula" type="xs:string" minOccurs="0"/>
+			<xs:element name="OccupiedBy" type="xs:string" minOccurs="0"/>
+			<xs:element name="Sequence" type="xs:integer" minOccurs="0"/>
+			<xs:element name="SystemStatus" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RentalContract">
+		<xs:sequence>
+			<xs:element name="RecordId" type="xs:long" minOccurs="0"/>
+			<xs:element name="Dates" type="hc:TimeSpan" minOccurs="0"/>
+			<xs:element name="OwnerRevenueShare" type="xs:double" minOccurs="0"/>
+			<xs:element name="RevenueShareFormula" type="xs:string" minOccurs="0"/>
+			<xs:element name="CommByOwner" type="xs:double" minOccurs="0"/>
+			<xs:element name="AutoRenewalDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="AutoRenewalMonths" type="xs:integer" minOccurs="0"/>
+			<xs:element name="ResvMaxNights" type="xs:integer" minOccurs="0"/>
+			<xs:element name="LongTerm" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="SystemStatus" type="xs:string" minOccurs="0"/>
+			<xs:element name="GraceMonths" type="xs:double" minOccurs="0"/>
+			<xs:element name="RevenuePool" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UnitContractDetails">
+		<xs:complexContent>
+			<xs:extension base="UnitContract">
+				<xs:sequence>
+					<xs:element name="RevenueShare" type="xs:double" minOccurs="0"/>
+					<xs:element name="CommissionShare" type="xs:double" minOccurs="0"/>
+					<xs:element name="ModifiedUnit" type="xs:boolean" minOccurs="0"/>
+					<xs:element name="Restrictions" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Restriction" type="ContractRestriction" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="RentalContracts" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="RentalContract" type="RentalContract" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Deductions" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Deduction" type="ContractDeduction" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Fees" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Fee" type="ContractFees" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Tasks" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Task" type="ContractTask" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Points" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Point" type="ContractPoints" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="ContractDocuments" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="ContractDocument" type="ContractDocument" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="InsurancePolicies" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Insurance" type="InsurancePolicy" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Elements" type="ContractElementList" minOccurs="0"/>
+					<xs:element name="Fractionals" type="ContractFractionalList" minOccurs="0"/>
+					<xs:element name="Miscellaneous" type="ContractMiscellaneous" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="UnitRate">
+		<xs:sequence>
+			<xs:element name="Unit" type="UnitContract"/>
+			<xs:element name="Rates" type="hc:RoomRateList" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UnitRateList">
+		<xs:sequence>
+			<xs:element name="UnitRates" type="UnitRate" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ContractElement">
+		<xs:sequence>
+			<xs:element name="RecordId" type="xs:long" minOccurs="0"/>
+			<xs:element name="Code" type="xs:string"/>
+			<xs:element name="Multiplier" type="xs:double"/>
+			<xs:element name="SystemStatus" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ContractFractional">
+		<xs:sequence>
+			<xs:element name="RecordId" type="xs:long" minOccurs="0"/>
+			<xs:element name="Dates" type="hc:TimeSpan"/>
+			<xs:element name="RepeatEndDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="RevenuePercentage" type="xs:double" minOccurs="0"/>
+			<xs:element name="CommissionPercentage" type="xs:double" minOccurs="0"/>
+			<xs:element name="Profiles" type="RelatedProfile"/>
+			<xs:element name="SystemStatus" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ContractElementList">
+		<xs:sequence>
+			<xs:element name="ContractElements" type="ContractElement" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ContractFractionalList">
+		<xs:sequence>
+			<xs:element name="ContractFractionals" type="ContractFractional" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ContractMiscellaneous">
+		<xs:sequence>
+			<xs:element name="ContractDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="EstimatedClosingDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="RealEstateAgent" type="xs:string" minOccurs="0"/>
+			<xs:element name="SalesAssociate" type="xs:string" minOccurs="0"/>
+			<xs:element name="PurchasePrice" type="c:Amount" minOccurs="0"/>
+			<xs:element name="Comments" type="c:Text" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by paul (Micros Systems Inc) -->
+<xs:schema targetNamespace="http://webservices.micros.com/og/4.3/Security/" xmlns:hc="http://webservices.micros.com/og/4.3/HotelCommon/" xmlns:c="http://webservices.micros.com/og/4.3/Common/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://webservices.micros.com/og/4.3/Security/" elementFormDefault="qualified" attributeFormDefault="unqualified" version="4.3">
+	<xs:import namespace="http://webservices.micros.com/og/4.3/Common/" schemaLocation="Common.xsd"/>
+	<xs:import namespace="http://webservices.micros.com/og/4.3/HotelCommon/" schemaLocation="HotelCommon.xsd"/>
+	<xs:simpleType name="FunctionNameType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="FetchBooking"/>
+			<xs:enumeration value="CancelBooking"/>
+			<xs:enumeration value="ModifyBooking"/>
+			<xs:enumeration value="CreateBooking"/>
+			<xs:enumeration value="FutureBooking"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ModuleNameType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Membership"/>
+			<xs:enumeration value="Availability"/>
+			<xs:enumeration value="Name"/>
+			<xs:enumeration value="Reservation"/>
+			<xs:enumeration value="Information"/>
+			<xs:enumeration value="Brochure"/>
+			<xs:enumeration value="StayHistory"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="UserAccountLockSettingType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="LOCK"/>
+			<xs:enumeration value="UNLOCK"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SystemIdType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="OWS"/>
+			<xs:enumeration value="GAMING"/>
+			<xs:enumeration value="PMS"/>
+			<xs:enumeration value="SC"/>
+			<xs:enumeration value="OVOS"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="UserRightItem">
+		<xs:attribute name="SystemId" type="SystemIdType" use="optional"/>
+		<xs:attribute name="Module" type="ModuleNameType" use="required"/>
+		<xs:attribute name="Function" type="FunctionNameType" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="UserRightsList">
+		<xs:sequence>
+			<xs:element name="UserRights" type="UserRightItem" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="SystemId" type="SystemIdType"/>
+	</xs:complexType>
+	<xs:complexType name="UserGroupItem">
+		<xs:attribute name="SystemId" type="SystemIdType"/>
+		<xs:attribute name="Group" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="UserGroupList">
+		<xs:sequence>
+			<xs:element name="UserGroup" type="UserGroupItem" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UserSystemRightsProfile">
+		<xs:sequence>
+			<xs:element name="UserGroups" type="UserGroupList" minOccurs="0"/>
+			<xs:element name="UserRights" type="UserRightsList" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="SystemId" type="SystemIdType" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="UserRightsProfile">
+		<xs:sequence>
+			<xs:element name="SystemRights" type="UserSystemRightsProfile" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UserProfile">
+		<xs:sequence>
+			<xs:element name="UserName" type="xs:string"/>
+			<xs:element name="NameId" type="c:UniqueID" minOccurs="0"/>
+			<xs:element name="LastLogin" type="xs:date" minOccurs="0"/>
+			<xs:element name="AccountLocked" minOccurs="0">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:boolean">
+							<xs:attribute name="dateLocked" type="xs:date" use="optional"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Password" minOccurs="0">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="IsExpired" type="xs:boolean" use="optional"/>
+							<xs:attribute name="LastPasswordChanged" type="xs:date" use="optional"/>
+							<xs:attribute name="IsSystemGenerated" type="xs:boolean" use="optional"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="SecurityQuestion" minOccurs="0">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="Answer" type="xs:string" use="optional"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Rights" type="UserRightsProfile" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ApplicationUserGroup">
+		<xs:attribute name="GroupID" type="xs:string"/>
+		<xs:attribute name="GroupName" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="ApplicationUserGroupList">
+		<xs:sequence>
+			<xs:element name="ApplicationUserGroup" type="ApplicationUserGroup" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Resort">
+	<xs:sequence>
+		<xs:element name="OperaResort" type="xs:string"/>
+		<xs:element name="ChannelResort" type="hc:HotelReference"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ResortList">
+		<xs:sequence>
+			<xs:element name="Resort" type="Resort" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Permission">
+		<xs:sequence>
+		<xs:element name="Properties" type="ResortList"/>
+		</xs:sequence>
+		<xs:attribute name="permissionName" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="PermissionList">
+		<xs:sequence>
+			<xs:element name="Permission" type="Permission" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

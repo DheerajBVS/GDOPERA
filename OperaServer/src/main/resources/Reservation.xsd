@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by Micros Systems Inc (Micros Systems Inc) -->
+<xs:schema targetNamespace="http://webservices.micros.com/og/4.3/Reservation/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://webservices.micros.com/og/4.3/Reservation/" xmlns:m="http://webservices.micros.com/og/4.3/Membership/" xmlns:c="http://webservices.micros.com/og/4.3/Common/" xmlns:hc="http://webservices.micros.com/og/4.3/HotelCommon/" xmlns:n="http://webservices.micros.com/og/4.3/Name/" elementFormDefault="qualified" attributeFormDefault="unqualified" version="4.3">
+	<xs:import namespace="http://webservices.micros.com/og/4.3/Common/" schemaLocation="Common.xsd"/>
+	<xs:import namespace="http://webservices.micros.com/og/4.3/HotelCommon/" schemaLocation="HotelCommon.xsd"/>
+	<xs:import namespace="http://webservices.micros.com/og/4.3/Name/" schemaLocation="Name.xsd"/>
+	<xs:import namespace="http://webservices.micros.com/og/4.3/Membership/" schemaLocation="Membership.xsd"/>
+	<xs:complexType name="HotelReservation">
+		<xs:sequence>
+			<xs:element name="UniqueIDList" type="c:UniqueIDList" minOccurs="0"/>
+			<xs:element name="RoomStays" type="hc:RoomStayList" minOccurs="0"/>
+			<xs:element name="ResGuests" type="ResGuestList" minOccurs="0"/>
+			<xs:element name="WrittenConfInst" type="WrittenConfInst" minOccurs="0"/>
+			<xs:element name="ReservationHistory" type="c:History" minOccurs="0"/>
+			<xs:element name="UserDefinedValues" type="c:UserDefinedValueList" minOccurs="0"/>
+			<xs:element name="Invoice" type="BillHeader" minOccurs="0"/>
+			<xs:element name="Preferences" type="n:PreferenceList" minOccurs="0"/>
+			<xs:element name="Alerts" type="Alert" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="PayRoutings" type="hc:ResPayRouting" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="PayMethods" type="hc:ResPayMethod" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="AccompanyGuests" type="hc:AccompanyGuestList" minOccurs="0"/>
+			<xs:element name="ECertificate" type="m:ECertificate" minOccurs="0"/>
+			<xs:element name="ShareReservations" type="ShareReservationList" minOccurs="0"/>
+			<xs:element name="Miscellaneous" type="MoreFields" minOccurs="0"/>
+      <xs:element name="ReservationVouchers" type="ReservationVoucherList" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="reservationAction" type="ReservationActionType" use="optional"/>
+		<xs:attribute name="reservationStatus" type="ReservationStatusType" use="optional"/>
+		<xs:attribute name="marketSegment" type="xs:string" use="optional"/>
+		<xs:attribute name="sourceCode" type="xs:string" use="optional"/>
+		<xs:attribute name="originCode" type="xs:string" use="optional"/>
+		<xs:attribute name="authorizer" type="xs:string" use="optional"/>
+		<xs:attribute name="compRoutingFlag" type="xs:string" use="optional"/>
+		<xs:attribute name="compRoutingAuthorizer" type="xs:string" use="optional"/>
+		<xs:attribute name="onBehalfFlag" type="xs:boolean"/>
+		<xs:attribute name="redemReservationFlag" type="xs:boolean"/>
+		<xs:attributeGroup ref="c:RecordAdministratorAttributes"/>
+		<xs:attribute name="walkIn" type="xs:boolean" use="optional"/>
+		<xs:attribute name="noPost" type="xs:boolean" use="optional"/>
+		<xs:attribute name="remoteCo" type="xs:boolean" use="optional"/>
+		<xs:attribute name="group" type="xs:string" use="optional"/>
+		<xs:attribute name="attachPreferenceProfile" type="xs:boolean" use="optional"/>
+		<xs:attribute name="keyExpirationDate" type="xs:dateTime" use="optional"/>
+		<xs:attribute name="totalCreditCardSurcharges" type="xs:double" use="optional"/>
+		<xs:attribute name="DoNotMoveRoom" type="xs:boolean" use="optional"/>
+		<xs:attribute name="OptIn" type="xs:boolean" use="optional"/>
+		<xs:attribute name="OptInComplete" type="xs:boolean" use="optional"/>
+		<xs:attribute name="commentsExists" type="xs:boolean" use="optional"/>
+	    <xs:attribute name="commentsCount" type="xs:int" use="optional"/>
+		<xs:attribute name="tracesExists" type="xs:boolean" use="optional"/>
+		<xs:attribute name="tracesCount" type="xs:int" use="optional"/>
+		<xs:attribute name="specialsExists" type="xs:boolean" use="optional"/>
+		<xs:attribute name="specialsCount" type="xs:int" use="optional"/>
+		<xs:attribute name="roomPreferenceExists" type="xs:boolean" use="optional"/>
+		<xs:attribute name="roomPreferencesCount" type="xs:int" use="optional"/>
+		<xs:attribute name="shareExists" type="xs:boolean" use="optional"/>
+		<xs:attribute name="queueExists" type="xs:boolean" use="optional"/>
+		<xs:attribute name="queueNumber" type="xs:int" use="optional"/>
+		<xs:attribute name="alertExists" type="xs:boolean" use="optional"/>
+		<xs:attribute name="alertsCount" type="xs:int" use="optional"/>
+		<xs:attribute name="messageExists" type="xs:boolean" use="optional"/>
+        <xs:attribute name="messagesCount" type="xs:int" use="optional"/>
+        <xs:attribute name="checkOutTime" type="xs:time" use="optional"/>
+		<xs:attribute name="computedReservationStatus" type="ReservationStatusType" use="optional"/>
+		<xs:attribute name="financialTransactionExists" type="xs:boolean" use="optional"/>
+		<xs:attribute name="printRate" type="xs:boolean" use="optional"/>
+		<xs:attribute name="referralYN" type="xs:string" use="optional"/>
+		<xs:attribute name="allowPreRegisteration" type="xs:boolean" use="optional"/>
+		<xs:attribute name="preRegisterFlag" type="xs:boolean" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="HotelReservationList">
+		<xs:sequence>
+			<xs:element name="HotelReservation" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="HotelReservation"/>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ReservationGuarantee">
+		<xs:sequence>
+			<xs:element name="GuaranteeInfo" type="hc:Paragraph" minOccurs="0"/>
+			<xs:element name="GuaranteeCreditCard" type="c:CreditCard" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="guaranteeType" type="xs:string" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="ResGuest">
+		<xs:sequence>
+			<xs:element name="Profiles" type="n:ProfileList" minOccurs="0"/>
+			<xs:element name="SpecialRequests" type="hc:SpecialRequestList" minOccurs="0"/>
+			<xs:element name="Comments" type="hc:ReservationCommentList" minOccurs="0"/>
+			<xs:element name="ArrivalTransport" type="hc:TransportInfo" minOccurs="0"/>
+			<xs:element name="DepartureTransport" type="hc:TransportInfo" minOccurs="0"/>
+			<xs:element name="GuestCounts" type="hc:GuestCountList" minOccurs="0"/>
+			<xs:element name="InHouseTimeSpan" type="hc:TimeSpan" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="resGuestRPH" type="xs:int" use="required"/>
+		<xs:attribute name="ageQualifyingCode" type="hc:AgeQualifyingCode"/>
+		<xs:attribute name="otherAgeQualifyingCode" type="xs:string"/>
+		<xs:attribute name="arrivalTime" type="xs:time"/>
+		<xs:attribute name="departureTime" type="xs:time"/>
+	</xs:complexType>
+	<xs:complexType name="ResGuestList">
+		<xs:sequence>
+			<xs:element name="ResGuest" type="ResGuest" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="WrittenConfInst">
+		<xs:sequence>
+			<xs:element name="Email" type="xs:string" minOccurs="0"/>
+			<xs:element name="OptionalEmail" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="languageId" type="xs:string"/>
+		<xs:attribute name="addresseeName" type="xs:string"/>
+		<xs:attribute name="address" type="xs:string"/>
+		<xs:attribute name="telephone" type="xs:string"/>
+	</xs:complexType>
+	<xs:simpleType name="ReservationActionType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ADD"/>
+			<xs:enumeration value="EDIT"/>
+			<xs:enumeration value="CANCEL"/>
+			<xs:enumeration value="CHECKIN"/>
+			<xs:enumeration value="CHECKOUT"/>
+			<xs:enumeration value="NOSHOW"/>
+			<xs:enumeration value="REINSTATE"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ReservationStatusType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="RESERVED"/>
+			<xs:enumeration value="PROSPECT"/>
+			<xs:enumeration value="NOSHOW"/>
+			<xs:enumeration value="CANCELED"/>
+			<xs:enumeration value="INHOUSE"/>
+			<xs:enumeration value="CHECKEDOUT"/>
+			<xs:enumeration value="CHANGED"/>
+			<xs:enumeration value="WAITLISTED"/>
+			<xs:enumeration value="CHECKEDIN"/>
+			<xs:enumeration value="PRECHECKEDIN"/>
+			<xs:enumeration value="DUEOUT"/>
+			<xs:enumeration value="DUEIN"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ReservationDispositionType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="NONE"/>
+			<xs:enumeration value="DUEIN"/>
+			<xs:enumeration value="INHOUSE"/>
+			<xs:enumeration value="DUEOUT"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="FetchBookingFilters">
+		<xs:annotation>
+			<xs:documentation>represents additional filters to search reservation</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:annotation>
+				<xs:documentation>IataCorpSourceContactExternalID represents actual code iata code or corp code or source code with type to search reservation when internal id from opera is not specified</xs:documentation>
+			</xs:annotation>
+			<xs:element name="CreationDate" type="hc:TimeSpan" minOccurs="0"/>
+			<xs:element name="ContractId" type="c:UniqueID" minOccurs="0"/>
+			<xs:element name="Membership" type="c:Membership" minOccurs="0"/>
+			<xs:element name="HotelReference" type="hc:HotelReference" minOccurs="0"/>
+			<xs:element name="ConfirmationNumber" type="c:UniqueID" minOccurs="0"/>
+			<xs:element name="ResvNameId" type="c:UniqueID" minOccurs="0"/>
+			<xs:element name="KeyTrack" type="c:KeyTrack" minOccurs="0"/>
+			<xs:element name="ExternalSystemNumber" type="ExternalReference" minOccurs="0"/>
+			<xs:element name="BlockCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="CompanyName" type="xs:string" minOccurs="0"/>
+			<xs:element name="IataCorpSourceContactExternalID" type="c:UniqueID" minOccurs="0"/>
+			<xs:element name="RecordLocator" type="c:UniqueID" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="GetList" type="xs:boolean" use="optional"/>
+		<xs:attribute name="RoomNumber" type="xs:string" use="optional"/>
+		<xs:attribute name="RoomClass" type="xs:string" use="optional"/>
+		<xs:attribute name="ReservationStatus" type="ReservationStatusType" use="optional"/>
+		<xs:attribute name="ReservationDisposition" type="ReservationDispositionType" use="optional"/>
+		<xs:attribute name="IncludePseudoRoom" type="xs:boolean" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="ExternalReference">
+		<xs:sequence>
+			<xs:element name="ReferenceNumber" type="xs:string"/>
+			<xs:element name="LegNumber" type="xs:int" minOccurs="0"/>
+			<xs:element name="ReferenceType" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BillHeader">
+		<xs:sequence>
+			<xs:element name="Address" type="n:NameAddress" minOccurs="0"/>
+			<xs:element name="Name" type="n:NativeName"/>
+			<xs:element name="ProfileIDs" type="c:UniqueIDList"/>
+			<xs:element name="BillNumber" type="c:UniqueID" minOccurs="0"/>
+			<xs:element name="BillItems" type="BillItem" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="BillTaxes" type="BillTax" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="CreditCardSurcharges" type="CreditCardSurcharge" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="CurrentBalance" type="c:Amount" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="FolioViewNo" type="xs:int"/>
+	</xs:complexType>
+	<xs:complexType name="BillItem">
+		<xs:sequence>
+			<xs:element name="Account" type="c:UniqueID"/>
+			<xs:element name="Amount" type="c:Amount"/>
+			<xs:element name="VatCode" type="c:UniqueID" minOccurs="0"/>
+			<xs:element name="RevenueGroup" type="xs:string" minOccurs="0"/>
+            <xs:element name="Supplement" type="xs:string" minOccurs="0"/>
+			<xs:element name="Reference" type="xs:string" minOccurs="0"/>
+			<xs:element name="OriginalRoom" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="Date" type="xs:date" use="required"/>
+		<xs:attribute name="Time" type="xs:time" use="optional"/>
+		<xs:attribute name="Description" type="xs:string" use="optional"/>
+		<xs:attribute name="TransactionCode" type="xs:string" use="optional"/>
+		<xs:attribute name="TransactionNo" type="xs:string" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="BillTax">
+		<xs:sequence>
+			<xs:element name="VatAmount" type="c:Amount" minOccurs="0"/>
+			<xs:element name="VatAmountEuro" type="c:Amount" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="Description" type="xs:string" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="Alert">
+		<xs:sequence>
+			<xs:element name="AlertId" type="c:UniqueID" minOccurs="0"/>
+			<xs:element name="Code" type="xs:string"/>
+			<xs:element name="Area" type="xs:string"/>
+			<xs:element name="Description" type="xs:string" minOccurs="0"/>
+			<xs:element name="PrinterNotification" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="ScreenNotification" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="Global" type="xs:boolean" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CreditCardSurcharge">
+		<xs:sequence>
+			<xs:element name="SurchargeThreshold" type="c:Amount" minOccurs="0"/>
+			<xs:element name="SurchargeAmount" type="c:Amount"/>
+			<xs:element name="TaxAmount" type="c:Amount" minOccurs="0"/>
+			<xs:element name="TotalBillAmount" type="c:Amount"/>
+		</xs:sequence>
+		<xs:attribute name="CreditCardType" type="xs:string" use="required"/>
+		<xs:attribute name="SurchargePercentage" type="xs:float" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="UpgradeRoom">
+		<xs:annotation>
+			<xs:documentation>represents room upgrade on a hotel stay</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="awardType" type="xs:string"/>
+			<xs:element name="fromRoomCategory" type="xs:string" minOccurs="0"/>
+			<xs:element name="toRoomCategory" type="xs:string"/>
+			<xs:element name="pointsRequired" type="xs:double" minOccurs="0"/>
+			<xs:element name="pointsAvailable" type="xs:double" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UpgradeRoomList">
+		<xs:sequence>
+			<xs:element name="UpgradeRoomInfo" type="UpgradeRoom" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UpsellRoom">
+		<xs:annotation>
+			<xs:documentation>represents room upsell on a hotel stay</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="RoomCategory" type="xs:string"/>
+			<xs:element name="FirstAmount" type="c:Amount" minOccurs="0"/>
+			<xs:element name="TotalAmount" type="c:Amount" minOccurs="0"/>
+			<xs:element name="UpsellOfferId" type="xs:double" minOccurs="0"/>
+			<xs:element name="ToRateCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="ToRoomCategory" type="xs:string"/>
+			<xs:element name="ToRoomName" type="xs:string"/>
+			<xs:element name="ToDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="ToShortDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="UpsellAmount" type="c:Amount" minOccurs="0"/>
+			<xs:element name="UpsellTotalAmount" type="c:Amount" minOccurs="0"/>
+			<xs:element name="UpsellRankingOrder" type="xs:int" minOccurs="0"/>
+			<xs:element name="MembershipType" type="xs:string" minOccurs="0"/>
+			<xs:element name="MembershipLevel" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UpsellRoomList">
+		<xs:sequence>
+			<xs:element name="UpsellRoomInfo" type="UpsellRoom" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ShareReservation">
+		<xs:annotation>
+			<xs:documentation>represents details for share reservation</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="UniqueIDList" type="c:UniqueIDList" minOccurs="0"/>
+			<xs:element name="Profile" type="n:Profile" minOccurs="0"/>
+			<xs:element name="GuestCounts" type="hc:GuestCountList" minOccurs="0"/>
+			<xs:element name="ReservationGuarantee" type="hc:Guarantee" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="primary" type="xs:string" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="ShareReservationList">
+		<xs:sequence>
+			<xs:element name="ShareReservationDetails" type="ShareReservation" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="ShareActionType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ENTIRE"/>
+			<xs:enumeration value="SPLIT"/>
+			<xs:enumeration value="FULL"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SharerType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="MASTER"/>
+			<xs:enumeration value="JOINER"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="ShareAction">
+		<xs:sequence>
+			<xs:element name="ShareAllocation" type="SharerType" minOccurs="0"/>
+			<xs:element name="ActionType" type="ShareActionType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Joiner">
+		<xs:sequence>
+			<xs:element name="ConfirmationNumber" type="c:UniqueID" minOccurs="0"/>
+			<xs:element name="LegNumber" type="c:UniqueID" minOccurs="0"/>
+			<xs:element name="ResvNameId" type="c:UniqueID" minOccurs="0"/>
+			<xs:element name="NameId" type="c:UniqueID" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BookingRequest">
+		<xs:sequence>
+			<xs:element name="HotelReservation" type="HotelReservation"/>
+			<xs:element name="ExternalSystemNumber" type="ExternalReference" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BookingResult">
+		<xs:sequence>
+			<xs:element name="Result" type="hc:GDSResultStatus"/>
+			<xs:element name="HotelReservation" type="HotelReservation" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MoreFields">
+		<xs:sequence>
+			<xs:element name="CustomerValue" type="xs:string" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+  <xs:complexType name="ReservationVoucher">
+    <xs:sequence>
+      <xs:element name="CertificateID" type="c:UniqueID" minOccurs="0"/>
+      <xs:element name="VoucherNumber" type="xs:string" minOccurs="0"/>
+      <xs:element name="CertificateNumber" type="xs:string" minOccurs="0"/>
+      <xs:element name="VoucherDescription" type="c:Text" minOccurs="0"/>
+      <xs:element name="CertificateCode" type="xs:string"/>
+      <xs:element name="StayDate" type="xs:date" minOccurs="0"/>
+      <xs:element name="VoucherType">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="E-CERTIFICATE"/>
+            <xs:enumeration value="PROMOTION"/>
+            <xs:enumeration value="RATE"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="RateCode" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ReservationVoucherList">
+    <xs:sequence>
+      <xs:element name="ReservationVoucherInfo" type="ReservationVoucher" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+</xs:schema>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by paul (Micros Systems Inc) -->
+<xs:schema targetNamespace="http://webservices.micros.com/og/4.3/AmandaInfo/" xmlns:tns="http://webservices.micros.com/og/4.3/AmandaInfo/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://webservices.micros.com/og/4.3/AmandaInfo/" xmlns:c="http://webservices.micros.com/og/4.3/Common/" elementFormDefault="qualified" attributeFormDefault="unqualified" version="4.3">
+	<xs:import namespace="http://webservices.micros.com/og/4.3/Common/" schemaLocation="Common.xsd"/>
+	<xs:complexType name="AmandaInfo">
+		<xs:annotation>
+			<xs:documentation>Travel agent's Amanda specific information.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="UniqueIDList" type="c:UniqueIDList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>A list of unique IDs, representing the confirmation numbers.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AmadeusOfficeCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="TravelFileNumber" type="xs:string" minOccurs="0"/>
+			<xs:element name="CustomerCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="CustomerName" type="xs:string" minOccurs="0"/>
+			<xs:element name="SalesType" type="xs:string" minOccurs="0"/>
+			<xs:element name="Remark" type="xs:string" minOccurs="0"/>
+			<xs:element name="SalesChannel" type="xs:string" minOccurs="0"/>
+			<xs:element name="ProductCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="AgentName" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AmandaInfoList">
+		<xs:annotation>
+			<xs:documentation>A collection of Amanda specific information.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="AmandaInfo" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="AmandaInfo"/>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

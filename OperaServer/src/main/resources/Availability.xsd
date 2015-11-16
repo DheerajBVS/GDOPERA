@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2005 rel. 3 U (http://www.altova.com) by  () -->
+<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by License: 4.0  Installed Multi Suite for 5 users (Micros Systems Inc) -->
+<xs:schema targetNamespace="http://webservices.micros.com/og/4.3/Availability/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:c="http://webservices.micros.com/og/4.3/Common/" xmlns:hc="http://webservices.micros.com/og/4.3/HotelCommon/" xmlns:m="http://webservices.micros.com/og/4.3/Membership/" xmlns:tns="http://webservices.micros.com/og/4.3/Availability/" elementFormDefault="qualified" attributeFormDefault="unqualified" version="4.3">
+	<xs:import namespace="http://webservices.micros.com/og/4.3/Common/" schemaLocation="Common.xsd"/>
+	<xs:import namespace="http://webservices.micros.com/og/4.3/HotelCommon/" schemaLocation="HotelCommon.xsd"/>
+	<xs:import namespace="http://webservices.micros.com/og/4.3/Membership/" schemaLocation="Membership.xsd"/>
+	<xs:complexType name="AvailRequestSegment">
+		<xs:sequence>
+			<xs:element name="StayDateRange" type="hc:TimeSpan" minOccurs="0"/>
+			<xs:element name="RateRange" type="hc:MinMaxRate" minOccurs="0"/>
+			<xs:element name="RatePlanCandidates" type="tns:RatePlanCandidateList" minOccurs="0"/>
+			<xs:element name="RoomStayCandidates" type="tns:RoomStayCandidateList" minOccurs="0"/>
+			<xs:element name="HotelSearchCriteria" type="tns:HotelSearchCriteria" minOccurs="0"/>
+			<xs:element name="ChildAges" type="tns:ChildAgeList" minOccurs="0"/>
+			<xs:element name="GdsTotalPrice" type="tns:GdsTotalPriceList" minOccurs="0"/>
+			<xs:element name="AlternateDates" type="tns:AlternateDateList" minOccurs="0" maxOccurs="5"/>
+			<xs:element name="PointsDateRange" type="hc:TimeSpan" minOccurs="0"/>
+			<xs:element name="ECertificate" type="m:ECertificate" minOccurs="0"/>
+			<xs:element name="ASBRateCycle" type="hc:ASBRateCycle" minOccurs="0"/>
+			<xs:element name="NameID" type="c:UniqueID" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="availReqType" type="hc:AvailRequestType" use="required"/>
+		<xs:attribute name="moreDataEchoToken" type="xs:string"/>
+		<xs:attribute name="numberOfRooms" type="xs:int"/>
+		<xs:attribute name="roomOccupancy" type="xs:int">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					RoomOccupancy, when specified, will refer to total number of Adults.
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="totalNumberOfGuests" type="xs:int" use="optional">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					TotalNumberOfGuests, when specified, will refer to total number of Adults.
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="numberOfAdults" type="xs:int" use="optional"/>
+		<xs:attribute name="numberOfChildren" type="xs:int" use="optional"/>
+		<xs:attribute name="childBucket1" type="xs:int" use="optional"/>
+		<xs:attribute name="childBucket2" type="xs:int" use="optional"/>
+		<xs:attribute name="childBucket3" type="xs:int" use="optional"/>
+		<xs:attribute name="membershipId" type="xs:long" use="optional"/>
+		<xs:attribute name="membershipType" type="xs:string" use="optional"/>
+		<xs:attribute name="membershipLevel" type="xs:string" use="optional"/>
+		<xs:attribute name="pointsBelow" type="xs:long" use="optional"/>
+		<xs:attribute name="pointsAbove" type="xs:long" use="optional"/>
+		<xs:attribute name="checkCateringPkgRate" type="xs:boolean" use="optional"/>
+		<xs:attribute name="displaySet" type="xs:string" use="optional"/>
+		<xs:attribute name="returnPseudoRooom" type="xs:boolean" use="optional"/>
+		<xs:attribute name="returnOnlyReqRate" type="xs:boolean" use="optional"/>
+		<xs:attribute name="membershipNumber" type="xs:string" use="optional"/>
+		<xs:attribute name="returnAmenities" type="xs:boolean" use="optional"/>
+		<xs:attribute name="returnFeatures" type="xs:boolean" use="optional"/>
+		<xs:attribute name="yieldMarketCode" type="xs:string" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="AvailRequestSegmentList">
+		<xs:sequence>
+			<xs:element name="AvailRequestSegment" type="tns:AvailRequestSegment" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AvailResponseSegment">
+		<xs:sequence>
+			<xs:element name="RoomStayList" type="hc:RoomStayList"/>
+			<xs:element name="AdditionalInformation" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="moreDataEchoToken" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="AvailResponseSegmentList">
+		<xs:sequence>
+			<xs:element name="AvailResponseSegment" type="tns:AvailResponseSegment" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HotelSearchCriteria">
+		<xs:sequence>
+			<xs:element name="Criterion" type="tns:HotelSearchCriterion" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HotelSearchCriterion">
+		<xs:sequence>
+			<xs:element name="HotelRef" type="hc:HotelReference"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PropertyStatusCode">
+		<xs:sequence>
+			<xs:element name="PropertyLevelError" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="propertyStatusCode" type="hc:PropertyStatusCodeType" use="required"/>
+		<xs:attribute name="otherPropertyStatusCode" type="xs:string" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="RatePlanCandidate">
+		<xs:sequence>
+			<xs:element name="MealPlanCodes" type="hc:AmenityInfo" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="ratePlanCode" type="xs:string"/>
+		<xs:attribute name="promotionCode" type="xs:string"/>
+		<xs:attribute name="qualifyingIdType" type="xs:string"/>
+		<xs:attribute name="qualifyingIdValue" type="xs:string"/>
+		<xs:attribute name="awardType" type="xs:string" use="optional"/>
+		<xs:attribute name="commissionCode" type="xs:string" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="RatePlanCandidateList">
+		<xs:sequence>
+			<xs:element name="RatePlanCandidate" type="tns:RatePlanCandidate" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RegionalAvailableProperty">
+		<xs:sequence>
+			<xs:element name="HotelReference" type="hc:HotelReference">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">In this context, full name of property will indeed be returned in root node value of the HotelReference.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PropertyStatus" type="tns:PropertyStatusCode"/>
+			<xs:element name="MinMaxRate" minOccurs="0">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="hc:MinMaxRate"/>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="isNegotiatedRateAvailable" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="NumberToSell" type="xs:int" minOccurs="0"/>
+			<xs:element name="HotelContact" type="hc:HotelContact" minOccurs="0"/>
+			<xs:element name="HotelExtendedInformation" type="hc:ExtendedHotelInfo" minOccurs="0"/>
+			<xs:element name="MinimumRate" type="tns:MinMaxRateExtended" minOccurs="0"/>
+			<xs:element name="MaximumRate" type="tns:MinMaxRateExtended" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RegionalAvailableProperties">
+		<xs:sequence>
+			<xs:element name="RegionalAvailableProperty" type="tns:RegionalAvailableProperty" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RegionalSearchCode">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="regionalSearchCodeType" type="hc:RegionalSearchCodeType" use="required"/>
+				<xs:attribute name="otherRegionalSearchCodeType" use="optional"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="RoomStayCandidate">
+		<xs:sequence>
+			<xs:element name="AmenityInfo" type="hc:AmenityInfo" minOccurs="0"/>
+			<xs:element name="RoomFeatures" type="hc:RoomFeatureList" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="roomTypeCode" type="xs:string"/>
+		<xs:attribute name="invBlockCode" type="xs:string"/>
+		<xs:attribute name="roomClass" type="xs:string"/>
+		<xs:attribute name="pseudoRoom" type="xs:boolean"/>
+	</xs:complexType>
+	<xs:complexType name="RoomStayCandidateList">
+		<xs:sequence>
+			<xs:element name="RoomStayCandidate" type="tns:RoomStayCandidate" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RegionalSearch">
+		<xs:annotation>
+			<xs:documentation>Defines the geographic boundaries within which to search for available hotels.</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="GeoSearch" type="hc:GeoPosition"/>
+			<xs:element name="CitySearch" type="tns:CityCode"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="CityCode">
+		<xs:annotation>
+			<xs:documentation>City code where the availabilty needs to be searched in.</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="countryCode" type="xs:string" use="required"/>
+		<xs:attribute name="stateCode" type="xs:string" use="optional"/>
+		<xs:attribute name="cityCode" type="xs:string" use="required"/>
+		<xs:attribute name="sameCityIndicator" type="xs:boolean" use="optional"/>
+		<xs:attribute name="regionCode" type="xs:string" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="CalendarDailyDetail">
+		<xs:sequence>
+			<xs:element name="Rates" type="tns:CalendarRate" minOccurs="0"/>
+			<xs:element name="Occupancy" type="hc:RoomTypeInventoryList"/>
+		</xs:sequence>
+		<xs:attribute name="Date" type="xs:date"/>
+	</xs:complexType>
+	<xs:complexType name="CalendarRate">
+		<xs:sequence>
+			<xs:element name="RestrictionList" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Restriction" type="hc:Restriction" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="RateList">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Rate" type="hc:RoomRate" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Calendar">
+		<xs:sequence>
+			<xs:element name="CalendarDay" type="tns:CalendarDailyDetail" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RegionalAvailablePropertyExtended">
+		<xs:sequence>
+			<xs:element name="HotelReference" type="hc:HotelReference">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">In this context, full name of property will indeed be returned in root node value of the HotelReference.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PropertyStatus" type="tns:PropertyStatusCode" minOccurs="0"/>
+			<xs:element name="isNegotiatedRateAvailable" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="NumberToSell" type="xs:int" minOccurs="0"/>
+			<xs:element name="HotelContact" type="hc:HotelContact" minOccurs="0"/>
+			<xs:element name="HotelExtendedInformation" type="hc:ExtendedHotelInfo" minOccurs="0"/>
+			<xs:element name="MinimumRate" type="tns:MinMaxRateExtended" minOccurs="0"/>
+			<xs:element name="MaximumRate" type="tns:MinMaxRateExtended" minOccurs="0"/>
+			<xs:element name="RateRoomTypes" type="hc:RatePlanRoomTypeList"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MinMaxRateExtended">
+		<xs:sequence>
+			<xs:element name="Amount" type="c:Amount"/>
+			<xs:element name="RateCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="RateCodeDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="RateCodeShortDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="RateCodeName" type="xs:string" minOccurs="0"/>
+			<xs:element name="RoomType" type="xs:string" minOccurs="0"/>
+			<xs:element name="RoomTypeDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="RoomTypeShortDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="RoomTypeName" type="xs:string" minOccurs="0"/>
+			<xs:element name="CancellationPolicy" type="hc:Paragraph" minOccurs="0"/>
+			<xs:element name="IsRateChange" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="TotalAmount" type="c:Amount" minOccurs="0"/>
+			<xs:element name="ExpectedCharges" type="hc:DailyChargeList" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="MinMaxRateType" type="tns:MinMaxRateIndicator" use="required"/>
+		<xs:attribute name="CommissionCode" type="xs:string" use="optional"/>
+	</xs:complexType>
+	<xs:simpleType name="MinMaxRateIndicator">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="MINIMUM"/>
+			<xs:enumeration value="MAXIMUM"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="RegionalAvailablePropertyExtendedList">
+		<xs:sequence>
+			<xs:element name="RegionalAvailableProperty" type="tns:RegionalAvailablePropertyExtended" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RateCodeInformation">
+		<xs:attribute name="ratePlanCode" type="xs:string"/>
+		<xs:attribute name="ratePlanIndicator" type="xs:string"/>
+		<xs:attribute name="corporateCode" type="xs:string"/>
+		<xs:attribute name="ratePlanStatusCode" type="tns:StatusCodeIndicator"/>
+	</xs:complexType>
+	<xs:complexType name="RateCodeInformationList">
+		<xs:sequence>
+			<xs:element name="RateCodeInformation" type="tns:RateCodeInformation" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AreaAvailableProperty">
+		<xs:sequence>
+			<xs:element name="HotelReference" type="hc:HotelReference">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">In this context, full name of property will indeed be returned in root node value of the HotelReference.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PropertyStatus" type="tns:PropertyStatusCode"/>
+			<xs:element name="PropertyErrorCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="MinMaxRate" minOccurs="0">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="hc:MinMaxRate"/>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="RateCodes" type="tns:RateCodeInformationList" minOccurs="0"/>
+			<xs:element name="RateCalculationMethod" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AreaAvailableProperties">
+		<xs:sequence>
+			<xs:element name="AreaAvailableProperty" type="tns:AreaAvailableProperty" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="StatusCodeIndicator">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="INVALID"/>
+			<xs:enumeration value="RESTRICTED"/>
+			<xs:enumeration value="AVAILABLE"/>
+			<xs:enumeration value="UNAVAILABLE"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="ChildAge">
+		<xs:attribute name="age" type="xs:int"/>
+	</xs:complexType>
+	<xs:complexType name="ChildAgeList">
+		<xs:sequence>
+			<xs:element name="ChildAge" type="tns:ChildAge" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GdsTotalPriceList">
+		<xs:sequence>
+			<xs:element name="RateCalculation" type="hc:RateCalculation" minOccurs="0"/>
+			<xs:element name="AdditionalBedAmounts" type="hc:AdditionalBedAmountList" minOccurs="0"/>
+			<xs:element name="RoomQuality" type="xs:string" minOccurs="0"/>
+			<xs:element name="BedType" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AlternateDateList">
+		<xs:sequence>
+			<xs:element name="StayDateRange" type="hc:TimeSpan" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PackageCodesList">
+		<xs:sequence>
+			<xs:element name="PackageCode" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

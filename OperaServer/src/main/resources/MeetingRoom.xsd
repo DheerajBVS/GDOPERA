@@ -1,0 +1,924 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by Micros Systems Inc (Micros Systems Inc) -->
+<xs:schema targetNamespace="http://webservices.micros.com/og/4.3/MeetingRoom/" xmlns:a="http://webservices.micros.com/og/4.3/Availability/" xmlns:hc="http://webservices.micros.com/og/4.3/HotelCommon/" xmlns:c="http://webservices.micros.com/og/4.3/Common/"
+           xmlns:n="http://webservices.micros.com/og/4.3/Name/" xmlns:tns="http://webservices.micros.com/og/4.3/MeetingRoom/" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="4.3">
+	<xs:import namespace="http://webservices.micros.com/og/4.3/Common/" schemaLocation="Common.xsd"/>
+	<xs:import namespace="http://webservices.micros.com/og/4.3/HotelCommon/" schemaLocation="HotelCommon.xsd"/>
+	<xs:import namespace="http://webservices.micros.com/og/4.3/Availability/" schemaLocation="Availability.xsd"/>
+	<xs:import namespace="http://webservices.micros.com/og/4.3/Name/" schemaLocation="Name.xsd"/>
+	<xs:element name="MeetingMultiPropertyAvailabilityRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:choice>
+					<xs:element name="RegionalSearchCode" type="a:RegionalSearchCode"/>
+					<xs:element name="HotelReferences" type="hc:HotelReferenceList">
+						<xs:annotation>
+							<xs:documentation xml:lang="en">Hotel code(s) supplied here will supersede any information provided in RegionslSearchCode element.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="GeographicSearch" type="a:RegionalSearch"/>
+				</xs:choice>
+				<xs:element name="MeetingDates" type="hc:TimeSpan" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation xml:lang="en">Meeting Dates.  Difference between start date and end date should be less then or equal to 24hrs.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="RateRange" type="hc:MinMaxRate" minOccurs="0"/>
+				<xs:element name="MeetingSearchCretria" type="hc:MeetingSearch"/>
+				<xs:element name="PropertySearchCretria" type="hc:PropertySearch" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MeetingMultiPropertyAvailabilityResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Result" type="c:ResultStatus"/>
+				<xs:element name="AvailableProperties" type="tns:AvailableProperty" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MeetingAvailabilityRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MeetingDates" type="hc:TimeSpan"/>
+				<xs:element name="RateRange" type="hc:MinMaxRate" minOccurs="0"/>
+				<xs:element name="HotelReference" type="hc:HotelReference"/>
+			</xs:sequence>
+			<xs:attribute name="numberOfAttendees" type="xs:int" use="required"/>
+			<xs:attribute name="rateCode" type="xs:string" use="optional"/>
+			<xs:attribute name="room" type="xs:string" use="optional"/>
+			<xs:attribute name="summaryOnly" type="xs:boolean" use="required"/>
+			<xs:attribute name="alternateInventory" type="xs:boolean" use="required"/>
+			<xs:attribute name="setupStyleCode" type="xs:string" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MeetingAvailabilityResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Result" type="c:ResultStatus"/>
+				<xs:element name="AvailableProperties" type="tns:AvailableProperty" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MeetingPackageAvailabilityRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MeetingDates" type="hc:TimeSpan"/>
+				<xs:element name="RateRange" type="hc:MinMaxRate" minOccurs="0"/>
+				<xs:element name="HotelReference" type="hc:HotelReference"/>
+				<xs:element name="PackageID" type="c:UniqueID" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute name="numberOfAttendees" type="xs:int" use="required"/>
+			<xs:attribute name="summaryOnly" type="xs:boolean" use="required"/>
+			<xs:attribute name="template" type="xs:boolean" use="required"/>
+			<xs:attribute name="packageDays" type="xs:int" use="optional"/>
+			<xs:attribute name="checkAllDays" type="xs:boolean" use="optional"/>
+			<xs:attribute name="sameSpace" type="xs:boolean" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MeetingPackageAvailabilityResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Result" type="c:ResultStatus"/>
+				<xs:element name="Packages" type="tns:Package" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MeetingCreateEventRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Event" type="tns:MeetingEvent"/>
+				<xs:element name="CreditCard" type="hc:CreditCardPayment" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute name="bookAsInquiry" type="xs:boolean" use="optional"/>
+			<xs:attribute name="onSiteContact" type="xs:string" use="optional"/>
+			<xs:attribute name="depositOnly" type="xs:boolean" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MeetingCreateEventResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Result" type="c:ResultStatus"/>
+				<xs:element name="BookId" type="tns:BookId" minOccurs="0"/>
+				<xs:element name="CreditCardApproval" type="hc:CreditCardPayment" minOccurs="0"/>
+				<xs:element name="DepositAmount" type="c:Amount" minOccurs="0"/>
+				<xs:element name="EventCharges" type="c:Amount" minOccurs="0"/>
+                <xs:element name="RoomRevenue" type="c:Amount" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MeetingCreatePackageEventRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="PackageEvent" type="tns:PackageEvent"/>
+				<xs:element name="CreditCard" type="hc:CreditCardPayment" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute name="bookAsInquiry" type="xs:boolean" use="optional"/>
+			<xs:attribute name="onSiteContact" type="xs:string" use="optional"/>
+			<xs:attribute name="depositOnly" type="xs:boolean" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MeetingCreatePackageEventResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Result" type="c:ResultStatus"/>
+				<xs:element name="BookId" type="tns:BookId" minOccurs="0"/>
+				<xs:element name="CreditCardApproval" type="hc:CreditCardPayment" minOccurs="0"/>
+				<xs:element name="DepositAmount" type="c:Amount" minOccurs="0"/>
+				<xs:element name="EventCharges" type="c:Amount" minOccurs="0"/>
+                <xs:element name="RoomRevenue" type="c:Amount" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MeetingModifyEventRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Event" type="tns:MeetingEvent"/>
+				<xs:element name="CreditCard" type="hc:CreditCardPayment" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute name="bookAsInquiry" type="xs:boolean" use="optional"/>
+			<xs:attribute name="onSiteContact" type="xs:string" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MeetingModifyEventResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Result" type="c:ResultStatus"/>
+				<xs:element name="BookId" type="tns:BookId" minOccurs="0"/>
+				<xs:element name="CreditCardApproval" type="hc:CreditCardPayment" minOccurs="0"/>
+                <xs:element name="EventCharges" type="c:Amount" minOccurs="0"/>
+           		<xs:element name="RoomRevenue" type="c:Amount" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MeetingModifyPackageEventRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="PackageEvent" type="tns:PackageEvent"/>
+				<xs:element name="CreditCard" type="hc:CreditCardPayment" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute name="bookAsInquiry" type="xs:boolean" use="optional"/>
+			<xs:attribute name="onSiteContact" type="xs:string" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MeetingModifyPackageEventResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Result" type="c:ResultStatus"/>
+				<xs:element name="BookId" type="tns:BookId" minOccurs="0"/>
+				<xs:element name="CreditCardApproval" type="hc:CreditCardPayment" minOccurs="0"/>
+				<xs:element name="EventCharges" type="c:Amount" minOccurs="0"/>
+           		<xs:element name="RoomRevenue" type="c:Amount" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MeetingCancelEventRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="HotelReference" type="hc:HotelReference"/>
+				<xs:element name="BookId" type="tns:BookId"/>
+				<xs:element name="CreditCard" type="hc:CreditCardPayment" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MeetingCancelEventResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Result" type="c:ResultStatus"/>
+				<xs:element name="CreditCardApproval" type="hc:CreditCardPayment" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MeetingFetchEventRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="HotelReference" type="hc:HotelReference"/>
+				<xs:element name="BookId" type="tns:BookId"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MeetingFetchEventResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Result" type="c:ResultStatus"/>
+				<xs:element name="Event" type="tns:MeetingEvent" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MeetingFetchPackageEventRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="HotelReference" type="hc:HotelReference"/>
+				<xs:element name="BookId" type="tns:BookId"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MeetingFetchPackageEventResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Result" type="c:ResultStatus"/>
+				<xs:element name="PackageEvent" type="tns:PackageEvent" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MeetingFetchMenuRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="HotelReference" type="hc:HotelReference"/>
+				<xs:element name="MenuID" type="c:UniqueID" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute name="eventType" type="xs:string" use="optional"/>
+			<xs:attribute name="getMenuItems" type="xs:boolean" use="optional" default="true"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MeetingFetchMenuResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Result" type="c:ResultStatus"/>
+				<xs:element name="Menus" type="tns:Menu" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MeetingFetchMenuItemRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="HotelReference" type="hc:HotelReference"/>
+				<xs:element name="MenuID" type="c:UniqueID" minOccurs="0"/>
+				<xs:element name="MenuItemID" type="c:UniqueID" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute name="eventType" type="xs:string" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MeetingFetchMenuItemResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Result" type="c:ResultStatus"/>
+				<xs:element name="MenuItems" type="tns:MenuItem" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MeetingFetchMiscellaneousItemRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="HotelReference" type="hc:HotelReference"/>
+				<xs:element name="ItemID" type="c:UniqueID" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute name="itemClassID" type="xs:string" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MeetingFetchMiscellaneousItemResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Result" type="c:ResultStatus"/>
+				<xs:element name="MiscellaneousItems" type="tns:MiscellaneousItem" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MeetingFetchContractRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="HotelReference" type="hc:HotelReference"/>
+				<xs:element name="LetterType" type="tns:LetterType"/>
+			</xs:sequence>
+			<xs:attribute name="eventID" type="xs:string" use="optional"/>
+			<xs:attribute name="packageID" type="xs:string" use="optional"/>
+			<xs:attribute name="blockID" type="xs:string" use="required"/>
+			<xs:attribute name="emailContract" type="xs:boolean" use="required"/>
+			<xs:attribute name="emailAddress" type="xs:string" use="optional"/>
+			<xs:attribute name="currencyCode" type="xs:string" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MeetingFetchContractResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Result" type="c:ResultStatus"/>
+				<xs:element name="FileName" type="xs:string" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="CreateBlockRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="HotelReference" type="hc:HotelReference"/>
+				<xs:element name="Block" type="tns:BlockType"/>
+				<xs:element name="SleepingRooms" type="tns:SleepingRoom" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="CreditCard" type="hc:CreditCardPayment" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute name="bookAsInquiry" type="xs:boolean" use="optional"/>
+			<xs:attribute name="onSiteContact" type="xs:string" use="optional"/>
+			<xs:attribute name="depositOnly" type="xs:boolean" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="CreateBlockResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Result" type="c:ResultStatus"/>
+				<xs:element name="BlockId" type="c:UniqueID" minOccurs="0"/>
+				<xs:element name="BlockCode" type="xs:string" minOccurs="0"/>
+				<xs:element name="CreditCardApproval" type="hc:CreditCardPayment" minOccurs="0"/>
+				<xs:element name="DepositAmount" type="c:Amount" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ModifyBlockRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="HotelReference" type="hc:HotelReference"/>
+				<xs:element name="Block" type="tns:BlockType"/>
+				<xs:element name="SleepingRooms" type="tns:SleepingRoom" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="CreditCard" type="hc:CreditCardPayment" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute name="bookAsInquiry" type="xs:boolean" use="optional"/>
+			<xs:attribute name="onSiteContact" type="xs:string" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ModifyBlockResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Result" type="c:ResultStatus"/>
+				<xs:element name="BlockId" type="c:UniqueID" minOccurs="0"/>
+				<xs:element name="BlockCode" type="xs:string" minOccurs="0"/>
+				<xs:element name="CreditCardApproval" type="hc:CreditCardPayment" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MeetingRoomFetchMyBlocksRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="HotelReference" type="hc:HotelReference"/>
+				<xs:element name="ContactNameID" type="c:UniqueID" minOccurs="0"/>
+				<xs:element name="AccountNameID" type="c:UniqueID" minOccurs="0"/>
+				<xs:element name="BlockDate" type="hc:TimeSpan"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MeetingRoomFetchMyBlocksResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Result" type="c:ResultStatus"/>
+				<xs:element name="Blocks" type="tns:Block" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MeetingRoomFetchBlockRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="HotelReference" type="hc:HotelReference"/>
+				<xs:element name="BlockID" type="c:UniqueID" minOccurs="0"/>
+				<xs:element name="BlockCode" type="xs:string" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute name="contactNameID" type="xs:long" use="optional"/>
+			<xs:attribute name="returnDelegates" type="xs:boolean" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MeetingRoomFetchBlockResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Result" type="c:ResultStatus"/>
+				<xs:element name="Block" type="tns:BlockDetails" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MeetingRoomCopyBlockRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="HotelReference" type="hc:HotelReference"/>
+				<xs:element name="SourceBlockID" type="c:UniqueID"/>
+				<xs:element name="NewBlockData" type="tns:NewBlockDataType"/>
+				<xs:element name="CreditCard" type="hc:CreditCardPayment" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MeetingRoomCopyBlockResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Result" type="c:ResultStatus"/>
+				<xs:element name="Block" type="tns:BookId" minOccurs="0"/>
+				<xs:element name="CreditCardApproval" type="hc:CreditCardPayment" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MeetingRoomCreateRelationshipRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="HotelReference" type="hc:HotelReference"/>
+				<xs:element name="From" type="tns:ProfileData"/>
+				<xs:element name="To" type="tns:ProfileData"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MeetingRoomCreateRelationshipResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Result" type="c:ResultStatus"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MeetingRegisterEventAttendeesRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="HotelReference" type="hc:HotelReference"/>
+				<xs:element name="EventAttendees" type="tns:EventAttendee" maxOccurs="unbounded"/>
+				<xs:element name="BlockID" type="c:UniqueID"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MeetingRegisterEventAttendeesResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Result" type="c:ResultStatus"/>
+				<xs:element name="Delegates" type="tns:Delegate" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MeetingFetchMyRegisteredEventsRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="HotelReference" type="hc:HotelReference"/>
+				<xs:element name="ProfileID" type="c:UniqueID"/>
+				<xs:element name="BlockID" type="c:UniqueID" minOccurs="0"/>
+				<xs:element name="EventID" type="c:UniqueID" minOccurs="0"/>
+				<xs:element name="DateRange" type="hc:TimeSpan" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MeetingFetchMyRegisteredEventsResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Events" type="tns:MeetingEventBase" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="Result" type="c:ResultStatus"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MeetingFetchBlockDelegatesRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="HotelReference" type="hc:HotelReference"/>
+				<xs:element name="ContactProfileID" type="c:UniqueID"/>
+				<xs:element name="BlockId" type="c:UniqueID"/>
+				<xs:element name="EventID" type="c:UniqueID" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MeetingFetchBlockDelegatesResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Result" type="c:ResultStatus"/>
+				<xs:element name="Delegates" type="tns:Delegate" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="BlockType">
+		<xs:sequence>
+			<xs:element name="Profile" type="n:Profile" maxOccurs="unbounded"/>
+			<xs:element name="BlockDate" type="hc:TimeSpan"/>
+			<xs:element name="BlockId" type="c:UniqueID" minOccurs="0"/>
+			<xs:element name="BlockNotes" type="hc:Note" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="blockName" type="xs:string" use="required"/>
+		<xs:attribute name="blockCode" type="xs:string" use="optional"/>
+		<xs:attribute name="blockStatus" type="xs:string" use="optional"/>
+		<xs:attribute name="marketSegment" type="xs:string" use="optional"/>
+		<xs:attribute name="sourceCode" type="xs:string" use="optional"/>
+		<xs:attribute name="rateCode" type="xs:string" use="optional"/>
+		<xs:attribute name="attendees" type="xs:long" use="optional"/>
+		<xs:attribute name="currencyCode" type="xs:string" use="optional"/>
+		<xs:attribute name="guaranteeCode" type="xs:string" use="optional"/>
+		<xs:attribute name="elastic" type="xs:boolean" use="optional"/>
+		<xs:attribute name="cutoffDate" type="xs:date" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="AvailableProperty">
+		<xs:sequence>
+			<xs:element name="HotelReference" type="hc:HotelReference"/>
+			<xs:element name="PropertyStatus" type="a:PropertyStatusCode" minOccurs="0"/>
+			<xs:element name="FunctionSpace" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="tns:FunctionSpace">
+							<xs:attribute name="avaliablityString" type="xs:string" use="optional"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="HotelContact" type="hc:HotelContact" minOccurs="0"/>
+			<xs:element name="HotelExtendedInformation" type="hc:ExtendedHotelInfo" minOccurs="0"/>
+			<xs:element name="MarketingText" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="propertyType" type="xs:string" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="CateringRateCode">
+		<xs:sequence>
+			<xs:element name="RateCode" type="xs:string"/>
+			<xs:element name="RateDescription" type="hc:Paragraph" minOccurs="0"/>
+			<xs:element name="Rate" type="tns:CateringRate" minOccurs="0"/>
+			<xs:element name="MinimumRevenue" type="c:Amount" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="rateType" type="xs:string" use="optional"/>
+		<xs:attribute name="hourlyRate" type="xs:boolean" use="optional"/>
+		<xs:attribute name="participateInMinimumRevenue" type="xs:boolean" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="PackageRateCode">
+		<xs:sequence>
+			<xs:element name="RateCode" type="xs:string"/>
+			<xs:element name="RateDescription" type="hc:Paragraph" minOccurs="0"/>
+			<xs:element name="PackageEventRates" type="tns:EventRate" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="rateType" type="xs:string" use="optional"/>
+		<xs:attribute name="hourlyRate" type="xs:boolean" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="EventRate">
+		<xs:sequence>
+			<xs:element name="EventID" type="c:UniqueID" minOccurs="0"/>
+			<xs:element name="Rate" type="tns:CateringRate" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CateringRate">
+		<xs:sequence>
+			<xs:element name="RevenueTypes" type="tns:RevenueType" maxOccurs="unbounded"/>
+			<xs:element name="TotalRate" type="c:Amount" minOccurs="0"/>
+			<xs:element name="TotalTaxesAndFees" type="c:Amount" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RevenueType">
+		<xs:sequence>
+			<xs:element name="BaseRate" type="hc:Charge" maxOccurs="unbounded"/>
+			<xs:element name="TaxesAndFees" type="hc:Charge" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="taxInclusive" type="xs:boolean" use="required"/>
+		<xs:attribute name="revenueCode" type="xs:string" use="required"/>
+		<xs:attribute name="revenueName" type="xs:string" use="optional"/>
+		<xs:attribute name="contributeToMinimumRevenuew" type="xs:boolean" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="FunctionSpace">
+		<xs:sequence>
+			<xs:element name="Room" type="xs:string"/>
+			<xs:element name="RoomDescription" type="hc:Paragraph" minOccurs="0"/>
+			<xs:element name="RateRange" type="hc:MinMaxRate" minOccurs="0"/>
+			<xs:element name="RateDetails" type="tns:CateringRateCode" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="SetupStyles" type="tns:SetupStyle" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="WebBookable" type="tns:WebBookableType" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="locationType" type="xs:string" use="optional"/>
+		<xs:attribute name="locationDescription" type="xs:string" use="optional"/>
+		<xs:attribute name="spaceType" type="xs:string" use="optional"/>
+		<xs:attribute name="spaceDescription" type="xs:string" use="optional"/>
+		<xs:attribute name="floor" type="xs:string" use="optional"/>
+		<xs:attribute name="floorDescription" type="xs:string" use="optional"/>
+		<xs:attribute name="shortDescription" type="xs:string" use="optional"/>
+		<xs:attribute name="handicapFacility" type="xs:boolean" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="SetupStyle">
+		<xs:sequence>
+			<xs:element name="SetupStyleCode" type="xs:string"/>
+			<xs:element name="SetupStyleDescription" type="hc:Paragraph" minOccurs="0"/>
+			<xs:element name="InternalBookedID" type="c:InternalID" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="minimumOccupancy" type="xs:int" use="optional"/>
+		<xs:attribute name="maximumOccupancy" type="xs:int" use="optional"/>
+		<xs:attribute name="setUpMinutes" type="xs:int" use="optional"/>
+		<xs:attribute name="setDownMinutes" type="xs:int" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="MenuItem">
+		<xs:sequence>
+			<xs:element name="MenuItemID" type="c:UniqueID"/>
+			<xs:element name="Description" type="hc:Paragraph" minOccurs="0"/>
+			<xs:element name="Charges" type="tns:CateringRate" minOccurs="0"/>
+			<xs:element name="EventType" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="InternalBookedID" type="c:InternalID" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="name1" type="xs:string" use="optional"/>
+		<xs:attribute name="name2" type="xs:string" use="optional"/>
+		<xs:attribute name="name3" type="xs:string" use="optional"/>
+		<xs:attribute name="restriction" type="xs:string" use="optional"/>
+		<xs:attribute name="beverage" type="xs:boolean" use="optional"/>
+		<xs:attribute name="priceIncluded" type="xs:boolean" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="Menu">
+		<xs:sequence>
+			<xs:element name="MenuID" type="c:UniqueID"/>
+			<xs:element name="EventMenuID" type="c:UniqueID" minOccurs="0"/>
+			<xs:element name="Description" type="hc:Paragraph" minOccurs="0"/>
+			<xs:element name="Charges" type="tns:CateringRate" minOccurs="0"/>
+			<xs:element name="EventType" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="MenuDate" type="hc:TimeSpan" minOccurs="0"/>
+			<xs:element name="MenuItems" type="tns:MenuItem" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="InternalBookedID" type="c:InternalID" minOccurs="0"/>
+			<xs:element name="EventDate" type="hc:TimeSpan" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="name" type="xs:string" use="optional"/>
+		<xs:attribute name="restriction" type="xs:string" use="optional"/>
+		<xs:attribute name="beverage" type="xs:boolean" use="optional"/>
+		<xs:attribute name="consumption" type="xs:boolean" use="optional"/>
+		<xs:attribute name="servingType" type="xs:string" use="optional"/>
+		<xs:attribute name="className" type="xs:string" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="MiscellaneousItem">
+		<xs:sequence>
+			<xs:element name="ItemID" type="c:UniqueID"/>
+			<xs:element name="Description" type="hc:Paragraph" minOccurs="0"/>
+			<xs:element name="ItemClassID" type="c:UniqueID" minOccurs="0"/>
+			<xs:element name="RateCodes" type="tns:CateringRateCode" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="InternalBookedID" type="c:InternalID" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Package">
+		<xs:sequence>
+			<xs:element name="PackageID" type="c:UniqueID"/>
+			<xs:element name="Description" type="hc:Paragraph" minOccurs="0"/>
+			<xs:element name="Events" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="tns:Event">
+							<xs:attribute name="eventType" type="xs:string" use="optional"/>
+							<xs:attribute name="eventName" type="xs:string" use="optional"/>
+							<xs:attribute name="masterEvent" type="xs:boolean" use="optional"/>
+							<xs:attribute name="masterEventID" type="xs:int" use="optional"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="PackageRateCodes" type="tns:PackageRateCode" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="InternalBookedID" type="c:InternalID" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="template" type="xs:boolean" use="required"/>
+		<xs:attribute name="packageCode" type="xs:string" use="optional"/>
+		<xs:attribute name="numberOfDays" type="xs:int" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="Event">
+		<xs:sequence>
+			<xs:element name="MiscellaneousItems" type="tns:MiscellaneousItem" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Menus" type="tns:Menu" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="FunctionSpace" type="tns:FunctionSpace"/>
+			<xs:element name="EventID" type="c:InternalID" minOccurs="0"/>
+			<xs:element name="EventDate" type="hc:TimeSpan" minOccurs="0"/>
+			<xs:element name="Delegates" type="tns:Delegate" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="registrationRequired" type="xs:boolean" use="optional"/>
+		<xs:attribute name="openForRegistration" type="xs:boolean" use="optional"/>
+		<xs:attribute name="numberOfAttendees" type="xs:int" use="optional"/>
+		<xs:attribute name="numberOfRegisteredAttendees" type="xs:int" use="optional"/>
+		
+	</xs:complexType>
+	<xs:complexType name="SleepingRoom">
+		<xs:sequence>
+			<xs:element name="RoomDates" type="hc:TimeSpan" minOccurs="0"/>
+			<xs:element name="RoomRevenue" type="c:Amount" minOccurs="0"/>
+			<xs:element name="RoomRevenueTax" type="c:Amount" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="roomType" type="xs:string" use="required"/>
+		<xs:attribute name="rateCode" type="xs:string" use="optional"/>
+		<xs:attribute name="quantity" type="xs:int" use="optional"/>
+		<xs:attribute name="occupancy1" type="xs:int" use="optional"/>
+		<xs:attribute name="occupancy2" type="xs:int" use="optional"/>
+		<xs:attribute name="occupancy3" type="xs:int" use="optional"/>
+		<xs:attribute name="occupancy4" type="xs:int" use="optional"/>
+		<xs:attribute name="actionType" use="optional">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="INCREASE"/>
+					<xs:enumeration value="DECREASE"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="MeetingEvent">
+		<xs:sequence>
+			<xs:element name="Profile" type="n:Profile" maxOccurs="unbounded"/>
+			<xs:element name="MeetingDates" type="hc:TimeSpan"/>
+			<xs:element name="HotelReference" type="hc:HotelReference"/>
+			<xs:element name="EventDetails" type="tns:MeetingEventBase" maxOccurs="unbounded"/>
+			<xs:element name="SleepingRooms" type="tns:SleepingRoom" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="BlockData" type="tns:EventBlockData" minOccurs="0"/>
+			<xs:element name="BlockID" type="c:UniqueID" minOccurs="0"/>
+			<xs:element name="EventCharges" type="c:Amount" minOccurs="0"/>
+            <xs:element name="RoomRevenue" type="c:Amount" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MeetingEventBase">
+		<xs:sequence>
+			<xs:element name="EventDate" type="hc:TimeSpan"/>
+			<xs:element name="EventID" type="c:InternalID" minOccurs="0"/>
+			<xs:element name="FunctionSpace" type="tns:FunctionSpace" minOccurs="0"/>
+			<xs:element name="MiscellaneousItems" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="tns:MiscellaneousItem">
+							<xs:attribute name="quantity" type="xs:int" use="required"/>
+							<xs:attribute name="addon" type="xs:boolean" use="optional"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Menus" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="tns:Menu">
+							<xs:attribute name="quantity" type="xs:int" use="required"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="MenuItems" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="tns:MenuItem">
+							<xs:attribute name="menuID" type="xs:int" use="required"/>
+							<xs:attribute name="quantity" type="xs:int" use="required"/>
+							<xs:attribute name="bookedMenuID" type="xs:int" use="optional"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Delegates" type="tns:Delegate" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="eventType" type="xs:string" use="optional"/>
+		<xs:attribute name="numberOfAttendees" type="xs:int" use="required"/>
+		<xs:attribute name="registrationRequired" type="xs:boolean" use="optional"/>
+		<xs:attribute name="openForRegistration" type="xs:boolean" use="optional"/>
+		<xs:attribute name="numberOfRegisteredAttendees" type="xs:int" use="optional"/>		
+	</xs:complexType>
+	<xs:complexType name="PackageIdData">
+		<xs:sequence>
+			<xs:element name="PackageID" type="c:UniqueID"/>
+			<xs:element name="PackageDate" type="hc:TimeSpan" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BookId">
+		<xs:sequence>
+			<xs:element name="EventIDs" type="tns:EventIdData" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="PackageIDs" type="tns:PackageIdData" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="BlockID" type="c:UniqueID"/>
+		</xs:sequence>
+		<xs:attribute name="blockCode" type="xs:string" use="optional"/>
+		<xs:attribute name="groupNameID" type="xs:long" use="optional"/>
+		<xs:attribute name="contactNameID" type="xs:long" use="optional"/>
+		<xs:attribute name="companyNameID" type="xs:long" use="optional"/>
+		<xs:attribute name="travelAgentNameID" type="xs:long" use="optional"/>
+		<xs:attribute name="returnDelegates" type="xs:boolean" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="EventIdData">
+		<xs:sequence>
+			<xs:element name="EventID" type="c:UniqueID"/>
+			<xs:element name="EventDate" type="hc:TimeSpan" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="room" type="xs:string" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="PackageDetails">
+		<xs:sequence>
+			<xs:element name="Package" type="tns:Package" minOccurs="0"/>
+			<xs:element name="PackageAddon" type="tns:PackageAddon" minOccurs="0"/>
+			<xs:element name="StartDate" type="xs:dateTime" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PackageEvent">
+		<xs:sequence>
+			<xs:element name="Profile" type="n:Profile" maxOccurs="unbounded"/>
+			<xs:element name="MeetingDates" type="hc:TimeSpan"/>
+			<xs:element name="HotelReference" type="hc:HotelReference"/>
+			<xs:element name="PackageDetails" type="tns:PackageDetails" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="SleepingRooms" type="tns:SleepingRoom" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="BlockData" type="tns:EventBlockData" minOccurs="0"/>
+			<xs:element name="BlockID" type="c:UniqueID" minOccurs="0"/>
+			<xs:element name="EventCharges" type="c:Amount" minOccurs="0"/>
+			<xs:element name="RoomRevenue" type="c:Amount" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="numberOfAttendees" type="xs:int" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="PackageAddon">
+		<xs:sequence>
+			<xs:element name="MiscellaneousItems" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="tns:MiscellaneousItem">
+							<xs:attribute name="quantity" type="xs:int" use="required"/>
+							<xs:attribute name="eventID" type="xs:int" use="required"/>
+							<xs:attribute name="bookedEventID" type="xs:int" use="optional"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Menus" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="tns:Menu">
+							<xs:attribute name="quantity" type="xs:int" use="required"/>
+							<xs:attribute name="eventID" type="xs:int" use="required"/>
+							<xs:attribute name="bookedEventID" type="xs:int" use="optional"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="MenuItems" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="tns:MenuItem">
+							<xs:attribute name="menuID" type="xs:int" use="required"/>
+							<xs:attribute name="eventID" type="xs:int" use="required"/>
+							<xs:attribute name="quantity" type="xs:int" use="required"/>
+							<xs:attribute name="bookedEventID" type="xs:int" use="optional"/>
+							<xs:attribute name="bookedMenuID" type="xs:int" use="optional"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EventBlockData">
+		<xs:sequence>
+			<xs:element name="BlockNotes" type="hc:Note" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="blockName" type="xs:string" use="optional"/>
+		<xs:attribute name="blockCode" type="xs:string" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="NewBlockDataType">
+		<xs:attribute name="blockName" type="xs:string" use="optional"/>
+		<xs:attribute name="blockCode" type="xs:string" use="optional"/>
+		<xs:attribute name="startDate" type="xs:dateTime" use="optional"/>
+		<xs:attribute name="bookAsInquiry" type="xs:boolean" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="WebBookableType">
+		<xs:attribute name="isWebBookable" type="xs:boolean" use="required"/>
+		<xs:attribute name="marketingText" type="xs:string" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="Block">
+		<xs:sequence>
+			<xs:element name="Block" type="tns:BlockType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BookedPackage">
+		<xs:sequence>
+			<xs:element name="Packages" type="tns:Package"/>
+			<xs:element name="PackageAddons" type="tns:PackageAddon" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BlockDetails">
+		<xs:sequence>
+			<xs:element name="BlockData" type="tns:BlockType"/>
+			<xs:element name="HotelReference" type="hc:HotelReference"/>
+			<xs:element name="BookedPackageEvent" type="tns:BookedPackageEvent" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="SleepingRooms" type="tns:SleepingRoom" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="RevenueSummary" type="tns:Revenue" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BookedPackageEvent">
+		<xs:choice>
+			<xs:element name="BookedPackage" type="tns:BookedPackage"/>
+			<xs:element name="Event" type="tns:MeetingEventBase"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="ProfileData">
+		<xs:sequence>
+			<xs:element name="NameId" type="c:UniqueID"/>
+			<xs:element name="NameType" type="c:ProfileType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="LetterType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="CONTRACT"/>
+			<xs:enumeration value="INQUIRY"/>
+			<xs:enumeration value="BEO"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="Delegate">
+		<xs:sequence>
+			<xs:element name="ProfileID" type="c:UniqueID"/>
+			<xs:element name="LastName" type="xs:string"/>
+			<xs:element name="FirstName" type="xs:string" minOccurs="0"/>
+			<xs:element name="EmailAddress" type="xs:string" minOccurs="0"/>
+			<xs:element name="VipCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="EventAttendeeStatus" type="tns:AttendeeStatus" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EventAttendee">
+		<xs:sequence>
+			<xs:element name="Profile" type="n:Profile"/>
+			<xs:element name="EventID" type="c:UniqueID" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="ActionType" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="Add"/>
+					<xs:enumeration value="Remove"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="AttendeeStatus">
+		<xs:sequence>
+			<xs:element name="EventID" type="c:UniqueID" minOccurs="0"/>
+			<xs:element name="Status" type="xs:string" minOccurs="0"/>
+			<xs:element name="ErrorCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="ErrorText" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Revenue">
+		<xs:sequence>
+			<xs:element name="TotalCharges" type="c:Amount" minOccurs="0"/>
+			<xs:element name="DepositAmount" type="c:Amount" minOccurs="0"/>
+			<xs:element name="PaidAmount" type="c:Amount" minOccurs="0"/>
+			<xs:element name="Balance" type="c:Amount" minOccurs="0"/>
+			<xs:element name="RoomRevenue" type="c:Amount" minOccurs="0"/>
+			<xs:element name="CateringRevenue" type="c:Amount" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

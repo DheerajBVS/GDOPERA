@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by Micros Systems Inc (Micros Systems Inc) -->
+<xs:schema targetNamespace="http://webservices.micros.com/og/4.3/GuestServices/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://webservices.micros.com/og/4.3/GuestServices/" xmlns:c="http://webservices.micros.com/og/4.3/Common/" xmlns:nm="http://webservices.micros.com/og/4.3/Name/" xmlns:hc="http://webservices.micros.com/og/4.3/HotelCommon/" elementFormDefault="qualified" attributeFormDefault="unqualified" version="4.3">
+	<xs:import namespace="http://webservices.micros.com/og/4.3/Common/" schemaLocation="Common.xsd"/>
+	<xs:import namespace="http://webservices.micros.com/og/4.3/Name/" schemaLocation="Name.xsd"/>
+	<xs:import namespace="http://webservices.micros.com/og/4.3/HotelCommon/" schemaLocation="HotelCommon.xsd"/>
+	<xs:element name="UpdateRoomStatusRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="HotelReference" type="hc:HotelReference"/>
+				<xs:element name="RoomNumber" type="xs:string"/>
+				<xs:element name="RoomStatus" type="RoomStatusType" minOccurs="0"/>
+				<xs:element name="TurnDownStatus" type="TurnDownStatusType" minOccurs="0"/>
+				<xs:element name="GuestServiceStatus" type="GuestServiceStatusType" minOccurs="0"/>
+				<xs:element name="RoomRepair" type="RoomRepairType" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="UpdateRoomStatusResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Result" type="c:ResultStatus"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="WakeUpCallRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="HotelReference" type="hc:HotelReference"/>
+				<xs:element name="ActionType" type="WakeupCallActionType"/>
+				<xs:element name="RoomNumber" type="xs:string"/>
+				<xs:element name="ResvNameId" type="c:UniqueID"/>
+				<xs:element name="WakeUpCallDetails" type="WakeUpCall"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="WakeUpCallResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Result" type="c:ResultStatus"/>
+				<xs:element name="WakeUpCallDetails" type="WakeUpCallList" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="RoomStatusType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Clean"/>
+			<xs:enumeration value="Dirty"/>
+			<xs:enumeration value="Inspected"/>
+			<xs:enumeration value="Pickup"/>
+			<xs:enumeration value="OutOfOrder"/>
+			<xs:enumeration value="OutOfService"/>
+
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="RepairStatusType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="OutOfOrder"/>
+			<xs:enumeration value="OutOfService"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TurnDownStatusType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Completed"/>
+			<xs:enumeration value="Required"/>
+			<xs:enumeration value="NotRequired"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="GuestServiceStatusType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="DoNotDisturb"/>
+			<xs:enumeration value="MakeUpRoom"/>
+			<xs:enumeration value="None"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="RoomRepairType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">This element reserved for future use.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="RepairDate" type="hc:TimeSpan"/>
+			<xs:element name="ReturnStatus" type="RoomStatusType"/>
+			<xs:element name="RepairStatus" type="RepairStatusType"/>
+			<xs:element name="RepairReason" type="xs:string"/>
+			<xs:element name="RepairType" type="xs:string" minOccurs="0"/>
+			<xs:element name="RepairRemarks" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="WakeUpCallStatusType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PENDING"/>
+			<xs:enumeration value="COMPLETED"/>
+			<xs:enumeration value="NOANSWER"/>
+			<xs:enumeration value="UNKNOWN"/>
+			<xs:enumeration value="CANCEL"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="WakeupCallActionType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">This element returned during fetch of wakeupcall.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ADD"/>
+			<xs:enumeration value="DELETE"/>
+			<xs:enumeration value="FETCH"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="WakeUpCall">
+		<xs:sequence>
+			<xs:element name="FromDate" type="xs:dateTime"/>
+			<xs:element name="ToDate" type="xs:dateTime"/>
+			<xs:element name="WakeupTime" type="xs:time"/>
+			<xs:element name="Comments" type="xs:string" minOccurs="0"/>
+			<xs:element name="Status" type="WakeUpCallStatusType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="WakeUpCallList">
+		<xs:sequence>
+			<xs:element name="WakeUpCalls" type="WakeUpCall" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="FetchOptInSetupRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="HotelReference" type="hc:HotelReference"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="FetchOptInSetupResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Result" type="c:ResultStatus"/>
+				<xs:element name="OptInSetup" type="OptInRequired"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="UpdateReservationForOptInRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="HotelReference" type="hc:HotelReference"/>
+				<xs:element name="ResvNameId" type="c:UniqueID"/>
+				<xs:element name="Phones" type="nm:NamePhoneList" minOccurs="0"/>
+				<xs:element name="GovernmentID" type="c:GovernmentID" minOccurs="0"/>
+				<xs:element name="DrivingLicenseID" type="xs:string" minOccurs="0"/>
+				<xs:element name="OtherID" type="xs:string" minOccurs="0"/>
+				<xs:element name="Membership" type="c:Membership" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute name="languageCode" type="xs:string"/>
+			<xs:attribute name="nationality" type="xs:string"/>
+			<xs:attribute name="countryCode" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="UpdateReservationForOptInResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Result" type="c:ResultStatus"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="OptInRequired">
+		<xs:sequence>
+			<xs:element name="PaymentTypes" type="hc:PaymentsAccepted" minOccurs="0"/>
+			<xs:element name="GuranteeTypes" type="hc:GuaranteeDetailList" minOccurs="0"/>
+			<xs:element name="MembershipTypes" type="TypeList" minOccurs="0"/>
+			<xs:element name="VIPTypes" type="TypeList" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="mobilePhoneRequired" type="xs:boolean"/>
+		<xs:attribute name="mobilePhoneType" type="xs:string"/>
+		<xs:attribute name="emailAddressRequired" type="xs:boolean"/>
+		<xs:attribute name="passportRequired" type="xs:boolean"/>
+		<xs:attribute name="drivingLicenseRequired" type="xs:boolean"/>
+		<xs:attribute name="otherIdRequired" type="xs:boolean"/>
+		<xs:attribute name="loayalityNumberRequired" type="xs:boolean"/>
+		<xs:attribute name="countryRequired" type="xs:boolean"/>
+		<xs:attribute name="nationalityRequired" type="xs:boolean"/>
+	</xs:complexType>
+	<xs:complexType name="TypeList">
+		<xs:annotation>
+			<xs:documentation>Collection of String</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="MappingType" type="xs:string" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

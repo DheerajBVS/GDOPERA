@@ -1,0 +1,772 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://webservices.micros.com/og/4.3/Membership/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://webservices.micros.com/og/4.3/Membership/" xmlns:c="http://webservices.micros.com/og/4.3/Common/"
+           xmlns:hc="http://webservices.micros.com/og/4.3/HotelCommon/" xmlns:nm="http://webservices.micros.com/og/4.3/Name/" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:import namespace="http://webservices.micros.com/og/4.3/Common/" schemaLocation="Common.xsd"/>
+	<xs:import namespace="http://webservices.micros.com/og/4.3/Name/" schemaLocation="Name.xsd"/>
+	<xs:import namespace="http://webservices.micros.com/og/4.3/HotelCommon/" schemaLocation="HotelCommon.xsd"/>
+	<xs:complexType name="MembershipTransaction">
+		<xs:annotation>
+			<xs:documentation>represents a transaction against a membership account.  This could be a points award, points consumption, bonus, etc.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="Points" type="tns:Points"/>
+			<xs:element name="Tsc" type="tns:Tsc" minOccurs="0"/>
+			<xs:element name="AwardLabel" type="xs:string" minOccurs="0"/>
+			<xs:element name="TransferDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="UserNotes" type="xs:string" minOccurs="0"/>
+			<xs:element name="PointsBreakups" type="tns:PointsBreakupList" minOccurs="0"/>
+			<xs:element name="ProfileList" type="tns:FavoriteGuestList" minOccurs="0"/>
+			<xs:element name="TotalQualifiedCentralRevenue" type="c:Amount" minOccurs="0"/>
+			<xs:element name="TotalQualifiedLocalRevenue" type="c:Amount" minOccurs="0"/>
+			<xs:element name="Revenues" type="tns:RevenueList" minOccurs="0"/>
+		</xs:all>
+		<xs:attribute name="postingDate" type="xs:date" use="optional"/>
+		<xs:attribute name="transactionTypeCode" type="xs:string" use="required"/>
+		<xs:attribute name="source" type="xs:string"/>
+		<xs:attribute name="referenceNumber" type="xs:string"/>
+		<xs:attribute name="startDate" type="xs:date"/>
+		<xs:attribute name="endDate" type="xs:date"/>
+		<xs:attribute name="pointsCalculated" type="xs:boolean"/>
+		<xs:attribute name="statementId" type="xs:string"/>
+		<xs:attribute name="transactionId" type="xs:string"/>
+		<xs:attribute name="crsReferenceNumber" type="xs:string"/>
+		<xs:attribute name="adjustment" type="xs:boolean" use="optional"/>
+		<xs:attribute name="resort" type="xs:string" use="optional"/>
+		<xs:attribute name="posCode" type="xs:string" use="optional"/>
+		<xs:attribute name="stayRecord" type="xs:boolean" use="optional"/>
+		<xs:attribute name="transactionDate" type="xs:date" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="MembershipTransactionList">
+		<xs:annotation>
+			<xs:documentation>represents a list of transcations made against a membership account</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="CardInfo" type="nm:NameMembership"/>
+			<xs:element name="MembershipTransaction" type="tns:MembershipTransaction" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Points">
+		<xs:annotation>
+			<xs:documentation>represents the breakdown of points</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="basePoints" type="xs:double"/>
+				<xs:attribute name="bonusPoints" type="xs:double"/>
+				<xs:attribute name="miscPoints" type="xs:double"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="UDFCharacter">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="description" type="xs:string"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="UDFNumeric">
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="description" type="xs:string"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="UDFDate">
+		<xs:simpleContent>
+			<xs:extension base="xs:date">
+				<xs:attribute name="description" type="xs:string"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="UDFs">
+		<xs:sequence>
+			<xs:element name="UDFC" type="tns:UDFCharacter" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="UDFN" type="tns:UDFNumeric" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="UDFD" type="tns:UDFDate" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="UDFsList">
+		<xs:sequence>
+			<xs:element name="UDFsInfo" type="tns:UDFs" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="Statement">
+		<xs:complexContent>
+			<xs:extension base="tns:MembershipTransactionList">
+				<xs:sequence>
+					<xs:element name="noticeText" type="c:TextList" minOccurs="0"/>
+					<xs:element name="AwardPointsToExpires" type="c:AwardPointsToExpireList" minOccurs="0"/>
+					<xs:element name="UDFsList" type="tns:UDFsList" minOccurs="0"/>
+				</xs:sequence>
+				<xs:attribute name="statementDate" type="xs:date" use="optional"/>
+				<xs:attribute name="statementID" type="xs:integer" use="optional"/>
+				<xs:attribute name="startDate" type="xs:date" use="optional"/>
+				<xs:attribute name="endDate" type="xs:date" use="optional"/>
+				<xs:attribute name="beginningBalance" type="xs:float" use="required"/>
+				<xs:attribute name="endingBalance" type="xs:float" use="optional"/>
+				<xs:attribute name="membershipYear" type="xs:int" use="optional"/>
+				<xs:attribute name="awardPointsEarned" type="xs:double" use="optional"/>
+				<xs:attribute name="awardPointsUsed" type="xs:double" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="StatementReference">
+		<xs:attribute name="statementId" type="xs:integer" use="required"/>
+		<xs:attribute name="statementDate" type="xs:date" use="required"/>
+		<xs:attribute name="membershipID" type="xs:int" use="required"/>
+		<xs:attribute name="locked" type="xs:boolean" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="StatementReferenceList">
+		<xs:sequence>
+			<xs:element name="StatementReferenceInfo" type="tns:StatementReference" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Tsc">
+		<xs:annotation>
+			<xs:documentation>represents the breakdown of TSC numbers</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="baseRevenue" type="xs:double"/>
+		<xs:attribute name="bonusRevenue" type="xs:double"/>
+		<xs:attribute name="baseNights" type="xs:int"/>
+		<xs:attribute name="bonusNights" type="xs:int"/>
+		<xs:attribute name="baseStay" type="xs:int"/>
+		<xs:attribute name="bonusStay" type="xs:int"/>
+	</xs:complexType>
+	<xs:complexType name="RateAward">
+		<xs:annotation>
+			<xs:documentation>represents a membership award in the form of a rate code for a hotel stay</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="membershipType" type="xs:string"/>
+			<xs:element name="awardType" type="xs:string"/>
+			<xs:element name="resort" type="xs:string"/>
+			<xs:element name="rateCode" type="xs:string"/>
+			<xs:element name="pointsRequired" type="xs:double"/>
+			<xs:element name="roomCategory" type="xs:string"/>
+			<xs:element name="beginDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="endDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="cancelPenaltyDays" type="xs:double" minOccurs="0"/>
+			<xs:element name="cancelPenaltyCharge" type="xs:double" minOccurs="0"/>
+			<xs:element name="cancelPenaltyPoints" type="xs:double" minOccurs="0"/>
+			<xs:element name="issueKey" type="xs:string" minOccurs="0"/>
+			<xs:element name="issueKeyRaw" type="xs:base64Binary" minOccurs="0"/>
+			<xs:element name="RateDescription" type="xs:string"/>
+			<xs:element name="RoomDescription" type="xs:string"/>
+			<xs:element name="DailyPoints" type="tns:PointsChangeList" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RateAwardList">
+		<xs:sequence>
+			<xs:element name="RateAwardInfo" type="tns:RateAward" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UpgradeAward">
+		<xs:annotation>
+			<xs:documentation>represents a membership award in the form of an room upgrade on a hotel stay</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="membershipType" type="xs:string"/>
+			<xs:element name="awardType" type="xs:string"/>
+			<xs:element name="resort" type="xs:string"/>
+			<xs:element name="fromRoomCategory" type="xs:string"/>
+			<xs:element name="toRoomCategory" type="xs:string"/>
+			<xs:element name="fromRoomCategoryLabel" type="xs:string"/>
+			<xs:element name="toRoomCategoryLabel" type="xs:string"/>
+			<xs:element name="pointsRequired" type="xs:double"/>
+			<xs:element name="beginDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="endDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="cancelPenaltyDays" type="xs:double" minOccurs="0"/>
+			<xs:element name="cancelPenaltyCharge" type="xs:double" minOccurs="0"/>
+			<xs:element name="cancelPenaltyPoints" type="xs:double" minOccurs="0"/>
+			<xs:element name="issueKey" type="xs:string" minOccurs="0"/>
+			<xs:element name="issueKeyRaw" type="xs:base64Binary" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UpgradeAwardList">
+		<xs:sequence>
+			<xs:element name="UpgradeAwardInfo" type="tns:UpgradeAward" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ProductAward">
+		<xs:annotation>
+			<xs:documentation>represents a membership award in the form of a product</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="membershipType" type="xs:string"/>
+			<xs:element name="awardType" type="xs:string"/>
+			<xs:element name="resort" type="xs:string"/>
+			<xs:element name="product" type="xs:string"/>
+			<xs:element name="shortDescription" type="xs:string"/>
+			<xs:element name="pointsRequired" type="xs:double"/>
+			<xs:element name="beginDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="endDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="cancelPenaltyDays" type="xs:double" minOccurs="0"/>
+			<xs:element name="cancelPenaltyCharge" type="xs:double" minOccurs="0"/>
+			<xs:element name="cancelPenaltyPoints" type="xs:double" minOccurs="0"/>
+			<xs:element name="issueKey" type="xs:string" minOccurs="0"/>
+			<xs:element name="issueKeyRaw" type="xs:base64Binary" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ProductAwardList">
+		<xs:sequence>
+			<xs:element name="ProductAwardInfo" type="tns:ProductAward" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Promotion">
+		<xs:all>
+			<xs:element name="Code" type="xs:string"/>
+			<xs:element name="Dates" type="hc:TimeSpan" minOccurs="0"/>
+			<xs:element name="Name" type="xs:string" minOccurs="0"/>
+			<xs:element name="IssueType" type="tns:PromotionIssueType" minOccurs="0"/>
+			<xs:element name="Status" type="tns:PromotionSubscriptionStatusType" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:simpleType name="PromotionSubscriptionStatusType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ACTIVE"/>
+			<xs:enumeration value="INACTIVE"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PromotionIssueType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ASSIGNED"/>
+			<xs:enumeration value="OPTIN"/>
+			<xs:enumeration value="PURCHASED"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="PromotionSubscription">
+		<xs:all>
+			<xs:element name="MembershipId" type="xs:int"/>
+			<xs:element name="Promotion" type="tns:Promotion"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="PromotionSubscriptionList">
+		<xs:sequence>
+			<xs:element name="PromotionSubscription" type="tns:Promotion" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="MembershipId" type="xs:int" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="MemberPointsList">
+		<xs:sequence>
+			<xs:element name="MemberPointsInfo" type="c:Membership" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+  <xs:complexType name="RequiredPointsInfo">
+    <xs:sequence>
+      <xs:element name="PointsBeginDate" type="xs:date" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Start date of the points applicable for the award.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="PointsEndDate" type="xs:date" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>End date until which the award is applicable.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="PointsRequired" type="xs:double" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+              Points for the given date range.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>  
+      <xs:element name="RuleSchedule" type="tns:RuleSchedule" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            Rule schedule applicable for the given date range.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="RequiredPointList">
+    <xs:sequence>
+      <xs:element name="RequiredPointsInfo" type="tns:RequiredPointsInfo" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+	<xs:complexType name="Award">
+		<xs:sequence>
+			<xs:element name="AwardCode" type="xs:string" minOccurs="0"/>
+      <xs:element name="AwardBeginDate" type="xs:date" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Start date from which the award is applicable.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AwardEndDate" type="xs:date" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>End date until which the award is applicable.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name ="Points" type ="tns:RequiredPointList">
+        <xs:annotation>
+          <xs:documentation>List of points needed for the award segregated by date.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PointsSchedule">
+		<xs:sequence>
+			<xs:element name="BeginDate" type="xs:date"/>
+			<xs:element name="EndDate" type="xs:date"/>
+			<xs:element name="PointsRequired" type="xs:int"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RuleSchedule">
+		<xs:sequence>
+			<xs:element name="Code" type="xs:string"/>
+			<xs:element name="Description" type="c:DescriptiveText"/>
+      <!-- The below element is no longer used in FetchAvailableEcertificates webservice.-->
+			<xs:element name="PointsSchedule" type="tns:PointsSchedule" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ECertificate">
+		<xs:sequence>
+			<xs:element name="CertificateID" type="c:UniqueID" minOccurs="0"/>
+			<xs:element name="VoucherNumber" type="xs:string" minOccurs="0"/>
+			<xs:element name="CertificateNumber" type="xs:string" minOccurs="0"/>
+			<xs:element name="CertificateCode" type="xs:string"/>
+			<xs:element name="HotelReference" type="hc:HotelReference" minOccurs="0"/>
+			<xs:element name="MembershipType" type="xs:string" minOccurs="0"/>
+			<xs:element name="AwardType" type="xs:string" minOccurs="0"/>
+			<xs:element name="PromotionCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="ShortDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="LongDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="ExpirationDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="ReservationCertificateYN" type="xs:string" minOccurs="0"/>
+			<xs:element name="CertificateValue" type="c:Amount" minOccurs="0"/>
+			<xs:element name="CertificateCost" type="c:Amount" minOccurs="0"/>
+			<xs:element name="CertificateLabel" type="xs:string" minOccurs="0"/>
+			<xs:element name="NameID" type="c:UniqueID" minOccurs="0"/>
+			<xs:element name="ConsumedAt" type="xs:string" minOccurs="0"/>
+			<xs:element name="ConsumerLastName" type="xs:string" minOccurs="0"/>
+			<xs:element name="ConsumerFirstName" type="xs:string" minOccurs="0"/>
+			<xs:element name="ConsumerMiddleName" type="xs:string" minOccurs="0"/>
+			<xs:element name="ConsumerEmail" type="xs:string" minOccurs="0"/>
+			<xs:element name="ConsumptionDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="ConsumedHotelReference" type="hc:HotelReference" minOccurs="0"/>
+			<xs:element name="ConsumptionRefNo" type="c:UniqueID" minOccurs="0"/>
+			<xs:element name="ConsumptionRefType" type="xs:string" minOccurs="0"/>
+			<xs:element name="ConsumptionLegNo" type="c:UniqueID" minOccurs="0"/>
+			<xs:element name="UserNotes" type="xs:string" minOccurs="0"/>
+			<xs:element name="Status" type="xs:string" minOccurs="0"/>
+			<xs:element name="PrintStatus" type="xs:string" minOccurs="0"/>
+			<xs:element name="MembershipAwardID" type="c:UniqueID" minOccurs="0"/>
+			<xs:element name="IssueType" type="xs:string" minOccurs="0"/>
+			<xs:element name="IssueSource" type="xs:string" minOccurs="0"/>
+			<xs:element name="AwardPoints" type="xs:double" minOccurs="0"/>
+			<xs:element name="InActiveDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="CertificateBeginDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="CertificateEndDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="CertificateExpriyMonths" type="xs:int" minOccurs="0"/>
+			<xs:element name="WebConsumed" type="xs:string" minOccurs="0"/>
+			<xs:element name="WebAllowed" type="xs:string" minOccurs="0"/>
+			<xs:element name="PMSConsumed" type="xs:string" minOccurs="0"/>
+			<xs:element name="Awards" type="tns:Award" minOccurs="0"/>
+			<xs:element name="Promotions" type="tns:PromotionDetails" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Scope" type="xs:string" minOccurs="0"/>
+			<xs:element name="HotelReferences" type="hc:HotelReference" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ECertificateList">
+		<xs:sequence>
+			<xs:element name="ECertificateInfo" type="tns:ECertificate" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FavoriteGuest">
+		<xs:sequence>
+			<xs:element name="GuestID" type="c:UniqueID" minOccurs="0"/>
+			<xs:element name="GuestNameID" type="c:UniqueID" minOccurs="0"/>
+			<xs:element name="PersonName" type="c:PersonName"/>
+			<xs:element name="EmailAddress" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="inactive" type="xs:boolean" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="FavoriteGuestList">
+		<xs:sequence>
+			<xs:element name="FavoriteGuestInfo" type="tns:FavoriteGuest" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+<xs:complexType name="MemberRevenue">
+		<xs:sequence>
+			<xs:element name="TransactionDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="RevenueType" type="xs:string" minOccurs="0"/>
+			<xs:element name="RevenueTypeLabel" type="xs:string" minOccurs="0"/>
+			<xs:element name="LocalRevenueAmount" type="c:Amount" minOccurs="0"/>
+			<xs:element name="CentralRevenueAmount" type="c:Amount" minOccurs="0"/>
+			<xs:element name="QualifiedLocalRevenueAmount" type="c:Amount" minOccurs="0"/>
+			<xs:element name="QualifiedCentralRevenueAmount" type="c:Amount" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RevenueList">
+		<xs:sequence>
+			<xs:element name="RevenueInfo" type="tns:MemberRevenue" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+
+	<xs:simpleType name="ActionType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ADD"/>
+			<xs:enumeration value="DELETE"/>
+			<xs:enumeration value="FETCH"/>
+			<xs:enumeration value="REACTIVATE"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AwardType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="RATE"/>
+			<xs:enumeration value="PRODUCT"/>
+			<xs:enumeration value="UPGRADE"/>
+			<xs:enumeration value="OTHER"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="AwardInformation">
+		<xs:annotation>
+			<xs:documentation>represents a award information for requested timespan</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Resort" type="xs:string" minOccurs="0"/>
+			<xs:element name="AwardCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="Description" type="xs:string" minOccurs="0"/>
+			<xs:element name="BeginDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="EndDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="Product" type="xs:string" minOccurs="0"/>
+			<xs:element name="ProductDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="RoomType" type="xs:string" minOccurs="0"/>
+			<xs:element name="RoomDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="ToRoomType" type="xs:string" minOccurs="0"/>
+			<xs:element name="ToRoomTypeDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="RateCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="RateDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="PointsRequired" type="xs:double" minOccurs="0"/>
+			<xs:element name="CancelPenaltyDays" type="xs:double" minOccurs="0"/>
+			<xs:element name="CancelPenaltyCharge" type="xs:double" minOccurs="0"/>
+			<xs:element name="CancelPenaltyPoints" type="xs:double" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AwardInformationList">
+		<xs:sequence>
+			<xs:element name="AwardInfoDetails" type="tns:AwardInformation" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ProfilePromotion">
+		<xs:sequence>
+			<xs:element name="Promotion" type="tns:Promotion"/>
+		</xs:sequence>
+		<xs:attribute name="membershipID" type="xs:int" use="required"/>
+		<xs:attribute name="membershipType" type="xs:string" use="required"/>
+		<xs:attribute name="membershipNumber" type="xs:string" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="ProfilePromotionList">
+		<xs:sequence>
+			<xs:element name="ProfilePromotion" type="tns:ProfilePromotion" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PointsBreakup">
+		<xs:attribute name="pointsType" type="xs:string" use="optional"/>
+		<xs:attribute name="points" type="xs:double" use="required"/>
+		<xs:attribute name="pointsDescription" type="xs:string" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="PointsBreakupList">
+		<xs:sequence>
+			<xs:element name="PointsBreakup" type="tns:PointsBreakup" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="FetchMemberTierWizardRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MembershipID" type="c:UniqueID"/>
+			</xs:sequence>
+			<xs:attribute name="evaluationDate" type="xs:date" use="required"/>
+			<xs:attribute name="evaluationType" type="tns:EvaluationTypes" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="FetchMemberTierWizardResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Result" type="c:ResultStatus"/>
+				<xs:element name="TierWizards" type="tns:TierWizard" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="EvaluationTypes">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="UPGRADE"/>
+			<xs:enumeration value="DOWNGRADE"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="TierWizard">
+		<xs:sequence>
+			<xs:element name="SequenceNumber" type="xs:int"/>
+			<xs:element name="MessageCode" type="xs:string"/>
+			<xs:element name="TranslatedMessage" type="c:Text"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="AddBenefitRequest">
+		<xs:complexType>
+			<xs:attribute name="benefitCode" type="xs:string" use="required"/>
+			<xs:attribute name="membershipID" type="xs:int" use="required"/>
+			<xs:attribute name="membershipType" type="xs:string" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="AddBenefitResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Result" type="c:ResultStatus"/>
+				<xs:element name="ProcessingMessage" type="xs:string" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="FetchBenefitsRequest">
+		<xs:complexType>
+			<xs:attribute name="membershipID" type="xs:int" use="required"/>
+			<xs:attribute name="membershipType" type="xs:string" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="Benefit">
+		<xs:sequence>
+			<xs:element name="BenefitCode" type="xs:string"/>
+			<xs:element name="ProcessingMessage" type="xs:string" minOccurs="0"/>
+			<xs:element name="BenefitActive" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="ProgramBeginDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="ProgramEndDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="ProgramDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="ProgramActive" type="xs:boolean" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="FetchBenefitsResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Result" type="c:ResultStatus"/>
+				<xs:element name="Beneifits" type="tns:Benefit" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="PointsChange">
+		<xs:sequence>
+			<xs:element name="EffectiveDate" type="xs:date"/>
+			<xs:element name="Points" type="xs:double"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PointsChangeList">
+		<xs:sequence>
+			<xs:element name="PointsChange" type="tns:PointsChange" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PromotionDetails">
+		<xs:sequence>
+			<xs:element name="PromotionCode" type="xs:string"/>
+			<xs:element name="PromotionName" type="xs:string" minOccurs="0"/>
+			<xs:element name="Resort" type="xs:string" minOccurs="0"/>
+			<xs:element name="BookingDate" type="hc:TimeSpan"/>
+			<xs:element name="StayDate" type="hc:TimeSpan"/>
+			<xs:element name="RateCode" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AwardPointsInfo">
+		<xs:sequence>
+			<xs:element name="TotalPoints" type="xs:double" minOccurs="0"/>
+			<xs:element name="BasePoints" type="xs:double" minOccurs="0"/>
+			<xs:element name="BonusPoints" type="xs:double" minOccurs="0"/>
+			<xs:element name="MiscPoints" type="xs:double" minOccurs="0"/>
+			<xs:element name="TotalPointsRange" type="xs:double" minOccurs="0"/>
+			<xs:element name="BasePointsRange" type="xs:double" minOccurs="0"/>
+			<xs:element name="BonusPointsRange" type="xs:double" minOccurs="0"/>
+			<xs:element name="MiscPointsRange" type="xs:double" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TierPointsInfo">
+		<xs:sequence>
+			<xs:element name="BaseStayPoints" type="xs:double" minOccurs="0"/>
+			<xs:element name="BaseNightsPoints" type="xs:double" minOccurs="0"/>
+			<xs:element name="BaseRevenuePoints" type="xs:double" minOccurs="0"/>
+			<xs:element name="BonusStayPoints" type="xs:double" minOccurs="0"/>
+			<xs:element name="BonusNightsPoints" type="xs:double" minOccurs="0"/>
+			<xs:element name="BonusRevenuePoints" type="xs:double" minOccurs="0"/>
+			<xs:element name="NextTierPoints" type="xs:double" minOccurs="0"/>
+			<xs:element name="BaseStayPointsRange" type="xs:double" minOccurs="0"/>
+			<xs:element name="BaseNightsPointsRange" type="xs:double" minOccurs="0"/>
+			<xs:element name="BaseRevenuePointsRange" type="xs:double" minOccurs="0"/>
+			<xs:element name="BonusStayPointsRange" type="xs:double" minOccurs="0"/>
+			<xs:element name="BonusNightsPointsRange" type="xs:double" minOccurs="0"/>
+			<xs:element name="BonusRevenuePointsRange" type="xs:double" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="StayPointsInfo">
+		<xs:sequence>
+			<xs:element name="MembershipTotalNights" type="xs:int" minOccurs="0"/>
+			<xs:element name="MembershipTotalStays" type="xs:int" minOccurs="0"/>
+			<xs:element name="GuestTotalNights" type="xs:int" minOccurs="0"/>
+			<xs:element name="GuestTotalStays" type="xs:int" minOccurs="0"/>
+			<xs:element name="MembershipTotalNightsRange" type="xs:int" minOccurs="0"/>
+			<xs:element name="MembershipTotalStaysRange" type="xs:int" minOccurs="0"/>
+			<xs:element name="GuestTotalNightsRange" type="xs:int" minOccurs="0"/>
+			<xs:element name="GuestTotalStaysRange" type="xs:int" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PointsInfo">
+		<xs:sequence>
+			<xs:element name="AwardPointsInfo" type="tns:AwardPointsInfo" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="TierPointsInfo" type="tns:TierPointsInfo" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="StayPointsInfo" type="tns:StayPointsInfo" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="TransactionPointsInfo" type="tns:TransactionPointsInfo" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="TransactionPointsInfo">
+		<xs:sequence>
+			<xs:element name="TotalPoints" type="xs:double" minOccurs="0"/>
+			<xs:element name="BasePoints" type="xs:double" minOccurs="0"/>
+			<xs:element name="BonusPoints" type="xs:double" minOccurs="0"/>
+			<xs:element name="MiscPoints" type="xs:double" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="TransactionAward">
+		<xs:annotation>
+			<xs:documentation>represents a membership award in the form transactions for a hotel stay</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="MembershipType" type="xs:string"/>
+			<xs:element name="AwardType" type="xs:string"/>
+			<xs:element name="HotelReference" type="hc:HotelReference" minOccurs="0"/>
+			<xs:element name="DisplaySet" type="xs:string" minOccurs="0"/>
+			<xs:element name="CancelPenaltyCharge" type="c:Amount" minOccurs="0"/>
+			<xs:element name="CancelPenaltyDays" type="xs:int" minOccurs="0"/>
+			<xs:element name="CancelPenaltyType" type="xs:string" minOccurs="0"/>
+			<xs:element name="IgnoreFinancialTransaction" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="IssueKey" type="xs:string" minOccurs="0"/>
+			<xs:element name="IssueKeyRaw" type="xs:base64Binary" minOccurs="0"/>
+			<xs:element name="LongDescription" type="c:DescriptiveText" minOccurs="0"/>
+			<xs:element name="ShortDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="MaxPercentAllowed" type="xs:double" minOccurs="0"/>
+			<xs:element name="MembershipLevel" type="xs:string" minOccurs="0"/>
+			<xs:element name="CentralCurrencyCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="OriginalPointsRequired" type="xs:double" minOccurs="0"/>
+			<xs:element name="PointsRequired" type="xs:double" minOccurs="0"/>
+			<xs:element name="HotelCurrencyCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="TransactionCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="SellBeginDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="SellEndDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="ExchangeRateType" type="xs:string" minOccurs="0"/>
+			<xs:element name="ComputedPointsRequired" type="xs:double" minOccurs="0"/>
+			<xs:element name="HotelTotalBillAmount" type="xs:double" minOccurs="0"/>
+			<xs:element name="HotelTotalBillAmountAllowed" type="xs:double" minOccurs="0"/>
+			<xs:element name="CentralBillAmount" type="xs:double" minOccurs="0"/>
+			<xs:element name="CentralBillAmountAllowed" type="xs:double" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TransactionAwardList">
+		<xs:sequence>
+			<xs:element name="TransactionAwardInfo" type="tns:TransactionAward" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="IssueTransactionAwardDetails">
+		<xs:annotation>
+			<xs:documentation>represents a data needs to sent to redeem transaction awards from external system to opera</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="MembershipType" type="xs:string"/>
+			<xs:element name="AwardType" type="xs:string"/>
+			<xs:element name="HotelReference" type="hc:HotelReference" minOccurs="0"/>
+			<xs:element name="PointsRequired" type="xs:double" minOccurs="0"/>
+			<xs:element name="TransactionCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="SellBeginDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="SellEndDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="HotelCurrencyCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="CentralCurrencyCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="ExchangeRateType" type="xs:string" minOccurs="0"/>
+			<xs:element name="PersonName" type="c:PersonName" minOccurs="0"/>
+			<xs:element name="Address" type="c:Address" minOccurs="0"/>
+			<xs:element name="UDFsList" type="c:UserDefinedValueList" minOccurs="0"/>
+			<xs:element name="IssueKey" type="xs:string" minOccurs="0"/>
+			<xs:element name="IssueKeyRaw" type="xs:base64Binary" minOccurs="0"/>
+			<xs:element name="Phone" type="c:Phone" minOccurs="0"/>
+			<xs:element name="NumberOfRooms" type="xs:int" minOccurs="0"/>
+			<xs:element name="NumberOfAdults" type="xs:int" minOccurs="0"/>
+			<xs:element name="HotelTotalBillAmount" type="xs:double" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+
+
+	<xs:complexType name="Fee">
+		<xs:sequence>
+			<xs:element name="FeeRecordId" type="c:UniqueID" minOccurs="0"/>
+			<xs:element name="FeeCode" type="xs:string"/>
+			<xs:element name="FeeDescription" type="xs:string"/>
+			<xs:element name="FeeAmount" type="c:Amount"/>
+			<xs:element name="AuthorizationCode" type="xs:string"/>
+			<xs:element name="Source" type="xs:string" minOccurs="0"/>
+			<xs:element name="Method" type="hc:PaymentType" minOccurs="0"/>
+			<xs:element name="Comments" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="FeeList">
+		<xs:sequence>
+			<xs:element name="Fee" type="tns:Fee" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="EnrollmentInfo">
+		<xs:sequence>
+			<xs:element name="Profile" type="nm:Profile" minOccurs="1"/>
+			<xs:element name="Membership" type="c:Membership" minOccurs="0"/>
+			<xs:element name="Fee" type="tns:Fee" minOccurs="0"/>
+			<xs:element name="EnrollmentAction" type="tns:EnrollmentActions" minOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+
+	<xs:complexType name="MemberSearchCriteria">
+		<xs:choice minOccurs="1">
+			<xs:element name="Membership">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="NameId" type="c:UniqueID" minOccurs="0"/>
+						<xs:element name="MembershipNumber" type="xs:string" minOccurs="0"/>
+						<xs:element name="MembershipType" type="xs:string" minOccurs="1" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="MembershipID" type="c:UniqueID" minOccurs="1"/>
+			
+		</xs:choice>
+	</xs:complexType>
+
+	<xs:simpleType name="EnrollmentActions">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ENROLL"/>
+			<xs:enumeration value="UPGRADE"/>
+			<xs:enumeration value="DOWNGRADE"/>
+			<xs:enumeration value="RENEW"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="FeeHistoryInfo">
+		<xs:sequence>
+			<xs:element name="PaymentDate" type="xs:date" minOccurs="0" />
+			<xs:element name="OriginalExpirationDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="NewExpirationDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="Fee" type="tns:Fee" minOccurs="0"/>
+			<xs:element name="OriginalMembershipLevel" type="xs:string" minOccurs="0"/>
+			<xs:element name="NewMembershipLevel" type="xs:string" minOccurs="0"/>
+			<xs:element name="MembershipType" type="xs:string" minOccurs="0" />
+			<xs:element name="MembershipNumber" type="xs:string"/>
+			<xs:element name="NameId" type="c:UniqueID" minOccurs="0"/>
+			<xs:element name="EnrollmentAction" type="tns:EnrollmentActions" minOccurs="0"/>
+			<xs:element name="InActiveDate" type="xs:date" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="FeeHistoryList">
+		<xs:sequence>
+			<xs:element name="FeeHistoryInfo" type="tns:FeeHistoryInfo" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

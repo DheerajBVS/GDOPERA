@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2005 rel. 3 U (http://www.altova.com) by  () -->
+<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by Micros Systems Inc (Micros Systems Inc) -->
+<xs:schema targetNamespace="http://webservices.micros.com/og/4.3/Activity/" xmlns:xsd="undefined" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:c="http://webservices.micros.com/og/4.3/Common/" xmlns:hc="http://webservices.micros.com/og/4.3/HotelCommon/" xmlns:tns="http://webservices.micros.com/og/4.3/Activity/" elementFormDefault="qualified" attributeFormDefault="unqualified" version="4.3">
+	<xs:import namespace="http://webservices.micros.com/og/4.3/Common/" schemaLocation="Common.xsd"/>
+	<xs:import namespace="http://webservices.micros.com/og/4.3/HotelCommon/" schemaLocation="HotelCommon.xsd"/>
+	<xs:complexType name="ActivityLookup">
+		<xs:annotation>
+			<xs:documentation>Used in the request message to describe the "filter" when executing an activity lookup. Also used in the response message to return the activities matching the filter criteria.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ProfileID" type="c:UniqueIDList" minOccurs="0"/>
+			<xs:element name="PersonName" type="c:PersonName" minOccurs="0"/>
+			<xs:element name="Address" type="c:Address" minOccurs="0"/>
+			<xs:element name="Phone" type="c:Phone" minOccurs="0"/>
+			<xs:element name="TimeSpan" type="hc:TimeSpan" minOccurs="0"/>
+			<xs:element name="Activities" type="tns:ActivityList" minOccurs="0"/>
+			<xs:element name="Membership" type="c:Membership" minOccurs="0"/>
+			<xs:element name="HotelReference" type="hc:HotelReference"/>
+			<xs:element name="ReturnOperaCode" type="xs:boolean" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="externalSystemId" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="ActivityLookupList">
+		<xs:annotation>
+			<xs:documentation>A collection of Activity Lookup items.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ActivityLookup" type="tns:ActivityLookup" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Activity">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Represents a single instance of a scheduled activity.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ActivityIDs" type="c:UniqueIDList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">A collection of reference ID values that identify this uniquely scheduled activity instance.   May contain one ID per external system plus an internal identifier.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ActivityType" type="tns:ActivityType" minOccurs="0"/>
+			<xs:element name="Location" type="xs:string" minOccurs="0"/>
+			<xs:element name="Name" type="c:Text" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="NumberOfPersons" type="xs:int" minOccurs="0"/>
+			<xs:element name="TimeSpan" type="hc:TimeSpan"/>
+			<xs:element name="Duration" type="hc:TimeSpan" minOccurs="0"/>
+			<xs:element name="Description" type="c:Text" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Description of the activity </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Note" type="c:Text" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Any additional notes or comments regarding the scheduled activity.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="GroupCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="Amount" type="c:Amount" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Informational item for presentation to guest - not meant for posting charges</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DepositRequired" minOccurs="0">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="c:Amount">
+							<xs:attribute name="collectedBy">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:enumeration value="Vendor"/>
+										<xs:enumeration value="Agent"/>
+										<xs:enumeration value="Other"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="InactiveDate" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="Participants" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Participant" type="c:PersonName" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="URLLink" type="xs:string" minOccurs="0"/>
+			<xs:element name="ActivityCode" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="status" type="xs:string" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="ActivityList">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">A collection of Activity objects.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Activity" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="tns:Activity"/>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="ActivityType">
+		<xs:union>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="Golf"/>
+					<xs:enumeration value="Class"/>
+					<xs:enumeration value="Spa"/>
+					<xs:enumeration value="TableReservation"/>
+					<xs:enumeration value="Tour"/>
+					<xs:enumeration value="Tennis"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:pattern value="\w+"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:element name="ActivityAvailabilityRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="TimeSpan" type="hc:TimeSpan"/>
+				<xs:element name="HotelReference" type="hc:HotelReference"/>
+				<xs:element name="ActivityTypeCode" type="xs:string" minOccurs="0"/>
+				<xs:element name="ActivityCode" type="xs:string" minOccurs="0"/>
+				<xs:element name="NameID" type="c:UniqueID" minOccurs="0"/>
+				<xs:element name="ResvNameId" type="c:UniqueID" minOccurs="0"/>
+				<xs:element name="PreferredResources" type="tns:ResourceList" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute name="availabilityType" type="xs:string" use="optional"/>
+			<xs:attribute name="externalSystemId" type="xs:string" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ActivityAvailabilityResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Result" type="c:ResultStatus"/>
+				<xs:element name="ActivityAvailabilities" type="tns:AvailabilityList" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="CreateActivityRequest">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="tns:OperaActivity"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="CreateActivityResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Result" type="c:ResultStatus"/>
+				<xs:element name="Activity" type="tns:BookedActivity"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="CancelActivityRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="HotelReference" type="hc:HotelReference"/>
+				<xs:element name="BookingID" type="c:UniqueID"/>
+			</xs:sequence>
+			<xs:attribute name="externalSystemId" type="xs:string" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="CancelActivityResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Result" type="c:ResultStatus"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="FetchActivityRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="HotelReference" type="hc:HotelReference"/>
+				<xs:element name="NameID" type="c:UniqueID" minOccurs="0"/>
+				<xs:element name="ResvNameId" type="c:UniqueID" minOccurs="0"/>
+				<xs:element name="BookingID" type="c:UniqueID" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute name="externalSystemId" type="xs:string" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="FetchActivityResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Result" type="c:ResultStatus"/>
+				<xs:element name="Activity" type="tns:BookedActivity" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="ActivityAvailability">
+		<xs:sequence>
+			<xs:element name="TimeSpan" type="hc:TimeSpan"/>
+			<xs:element name="Price" type="c:Amount" minOccurs="0"/>
+			<xs:element name="Resources" type="tns:ResourceList" minOccurs="0"/>
+			<xs:element name="ActivityCode" type="xs:string"/>
+			<xs:element name="Comments" type="xs:string" minOccurs="0"/>
+			<xs:element name="MaxAvailable" type="xs:int"/>
+			<xs:element name="HotelReference" type="hc:HotelReference"/>
+			<xs:element name="OutletCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="OutletDescription" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="availabilityType"/>
+	</xs:complexType>
+	<xs:complexType name="AvailabilityList">
+		<xs:sequence>
+			<xs:element name="ActivityAvailability" type="tns:ActivityAvailability" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Resource">
+		<xs:attribute name="category" type="xs:string" use="required"/>
+		<xs:attribute name="type" type="xs:string" use="optional"/>
+		<xs:attribute name="code" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="ResourceList">
+		<xs:sequence>
+			<xs:element name="Resource" type="tns:Resource" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="OperaActivity">
+		<xs:sequence>
+			<xs:element name="Activity" type="tns:Activity"/>
+			<xs:element name="PreferredResources" type="tns:ResourceList" minOccurs="0"/>
+			<xs:element name="ResvNameId" type="c:UniqueID" minOccurs="0"/>
+			<xs:element name="NameID" type="c:UniqueID"/>
+			<xs:element name="HotelReference" type="hc:HotelReference"/>
+		</xs:sequence>
+		<xs:attribute name="externalSystemId" type="xs:string" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="BookedActivity">
+		<xs:sequence>
+			<xs:element name="Activity" type="tns:Activity" minOccurs="0"/>
+			<xs:element name="Resources" type="tns:ResourceList" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>
